@@ -1,96 +1,72 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
-  const [role, setRole] = useState('student');
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'student' });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Register Data:', { ...formData, role });
+    console.log('Register Submitting:', formData);
+    navigate('/login');
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-4rem)] bg-slate-50 flex flex-col items-center justify-center px-4 py-10">
-      
-      {/* Register Card */}
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xl shadow-slate-200/50">
-        
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h2>
-          <p className="text-sm text-slate-500 mt-1">Join EduConnect Sri Lanka today</p>
+    <div className="h-[calc(100vh-64px)] w-full flex bg-white overflow-hidden">
+      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#1c0da1] to-[#0a044a] relative p-16 items-center overflow-hidden h-full">
+        <div className="absolute -top-20 -right-20 w-[450px] h-[450px] bg-gradient-to-b from-white/5 to-transparent rounded-full pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gradient-to-tr from-white/10 to-transparent rounded-full pointer-events-none" />
+        <div className="relative z-10 text-white space-y-4 max-w-lg">
+          <h2 className="text-5xl font-black tracking-wider uppercase">Join Us</h2>
+          <h3 className="text-2xl font-bold tracking-widest text-[#d9cb00] uppercase">Tutor Lanka Network</h3>
+          <p className="text-sm text-slate-200/70 leading-relaxed pt-2">Create your account and explore thousands of certified tutors or manage your educational facilities seamlessly.</p>
         </div>
+      </div>
 
-        {/* Role Selector Cards */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div 
-            onClick={() => setRole('student')}
-            className={`p-3.5 rounded-xl border text-center cursor-pointer transition-all duration-200 ${role === 'student' ? 'border-indigo-600 bg-indigo-50/50 ring-2 ring-indigo-600/10' : 'border-slate-200 bg-white hover:bg-slate-50'}`}
-          >
-            <span className="block font-bold text-sm text-slate-900">🎓 Student</span>
-            <span className="text-xs text-slate-400">Want to learn</span>
-          </div>
-          <div 
-            onClick={() => setRole('tutor')}
-            className={`p-3.5 rounded-xl border text-center cursor-pointer transition-all duration-200 ${role === 'tutor' ? 'border-indigo-600 bg-indigo-50/50 ring-2 ring-indigo-600/10' : 'border-slate-200 bg-white hover:bg-slate-50'}`}
-          >
-            <span className="block font-bold text-sm text-slate-900">👨‍🏫 Tutor</span>
-            <span className="text-xs text-slate-400">Want to teach</span>
-          </div>
-        </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">Full Name</label>
-            <input 
-              type="text" 
-              required
-              placeholder="Kamal Perera"
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm shadow-sm"
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-            />
+      <div className="w-full md:w-1/2 flex flex-col justify-center p-8 sm:p-16 relative bg-white h-full overflow-y-auto">
+        <div className="w-full max-w-md mx-auto">
+          <div className="mb-6">
+            <h2 className="text-4xl font-extrabold text-slate-800 tracking-tight">Sign up</h2>
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
-            <input 
-              type="email" 
-              required
-              placeholder="kamal@example.com"
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm shadow-sm"
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative flex items-center">
+              <span className="absolute left-4">📝</span>
+              <input type="text" name="name" required value={formData.name} onChange={handleChange} placeholder="Full Name" className="w-full pl-12 pr-4 py-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 focus:border-[#1c0da1] text-sm font-medium" />
+            </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">Password</label>
-            <input 
-              type="password" 
-              required
-              placeholder="••••••••"
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm shadow-sm"
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
-            />
-          </div>
+            <div className="relative flex items-center">
+              <span className="absolute left-4">✉️</span>
+              <input type="email" name="email" required value={formData.email} onChange={handleChange} placeholder="Email Address" className="w-full pl-12 pr-4 py-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 focus:border-[#1c0da1] text-sm font-medium" />
+            </div>
 
-          <button 
-            type="submit" 
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-md shadow-indigo-600/10 transform hover:-translate-y-0.5 text-sm mt-2"
-          >
-            Register as {role.charAt(0).toUpperCase() + role.slice(1)}
-          </button>
-        </form>
+            {/* Role Dropdown with Institute/Hall Option */}
+            <div className="relative flex items-center">
+              <span className="absolute left-4">🎓</span>
+              <select name="role" value={formData.role} onChange={handleChange} className="w-full pl-12 pr-4 py-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 focus:border-[#1c0da1] text-sm font-medium bg-white cursor-pointer appearance-none">
+                <option value="student">🎓 Student / Parent</option>
+                <option value="tutor">👨‍🏫 Tutor (Teacher)</option>
+                <option value="hall">🏫 Class Hall Owner / Institute</option>
+              </select>
+              <span className="absolute right-4 text-xs pointer-events-none text-slate-400">▼</span>
+            </div>
 
-        {/* Footer Link */}
-        <div className="text-center mt-6 pt-4 border-t border-slate-100">
-          <p className="text-sm text-slate-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-700">Sign In</Link>
+            <div className="relative flex items-center">
+              <span className="absolute left-4">🔒</span>
+              <input type="password" name="password" required value={formData.password} onChange={handleChange} placeholder="Password" className="w-full pl-12 pr-4 py-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 focus:border-[#1c0da1] text-sm font-medium" />
+            </div>
+
+            <button type="submit" className="w-full py-4 bg-[#1c0da1] text-white font-bold rounded-2xl hover:bg-[#0a044a] transition-all text-sm shadow-xl tracking-wide mt-4">Sign up</button>
+          </form>
+
+          <p className="text-center text-xs text-slate-400 mt-8 font-semibold">
+            Already have an account? <Link to="/login" className="font-black text-[#1c0da1] hover:underline ml-1">Sign In</Link>
           </p>
         </div>
-
       </div>
     </div>
   );
