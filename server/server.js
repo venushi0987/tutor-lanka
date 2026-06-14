@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 const connectDB = require('./config/db');
 const { initSocket } = require('./config/socket');
@@ -28,6 +29,7 @@ connectDB();
 initSocket(server);
 
 // Middleware
+app.use(cookieParser());
 app.use(helmet());
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
@@ -54,9 +56,10 @@ app.get('/api/health', (req, res) => res.json({ success: true, message: 'EduConn
 app.use((req, res) => res.status(404).json({ success: false, message: 'Route not found' }));
 
 // Error handler
+// TEMP DEBUG: include error stack in response to trace 'next is not a function'
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(err.status || 500).json({ success: false, message: err.message || 'Internal Server Error' });
+  res.status(err.status || 500).json({ success: false, message: err.message || 'Internal Server Error', stack: err.stack });
 });
 
 const PORT = process.env.PORT || 5000;
