@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 // Helper: set httpOnly refresh token cookie
 // ─────────────────────────────────────────────
 const setRefreshCookie = (res, token) => {
+  if (!token) return;
   res.cookie('refreshToken', token, {
     httpOnly: true,
     sameSite: 'lax',
@@ -57,22 +58,25 @@ const register = async (req, res) => {
       await StudentProfile.create({ userId: user._id });
     }
 
-    // Generate tokens
+    // Generate tokens (may be null when JWT is disabled)
     const accessToken = generateAccessToken(user._id, user.role);
     const refreshToken = generateRefreshToken(user._id);
 
-    // Persist refresh token in DB
-    user.refreshToken = refreshToken;
-    await user.save({ validateBeforeSave: false });
-
-    // Set cookie
-    setRefreshCookie(res, refreshToken);
+    // Persist refresh token and set cookie only if token was generated
+    if (refreshToken) {
+      user.refreshToken = refreshToken;
+      await user.save({ validateBeforeSave: false });
+      setRefreshCookie(res, refreshToken);
+    } else {
+      // Ensure we don't accidentally store undefined
+      user.refreshToken = null;
+      await user.save({ validateBeforeSave: false });
+    }
 
     await logActivity(user._id, 'register', `User registered as ${userRole}`, req);
 
-    res.status(201).json({
+    const responseBody = {
       success: true,
-      token: accessToken,
       user: {
         _id: user._id,
         name: user.name,
@@ -81,7 +85,10 @@ const register = async (req, res) => {
         avatar: user.avatar,
         isVerified: user.isVerified,
       },
-    });
+    };
+    if (accessToken) responseBody.token = accessToken;
+
+    res.status(201).json(responseBody);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -138,22 +145,25 @@ const login = async (req, res) => {
     user.lockUntil = null;
     user.lastSeen = Date.now();
 
-    // Generate tokens
+    // Generate tokens (may be null when JWT is disabled)
     const accessToken = generateAccessToken(user._id, user.role);
     const refreshToken = generateRefreshToken(user._id);
 
-    // Persist refresh token
-    user.refreshToken = refreshToken;
-    await user.save({ validateBeforeSave: false });
-
-    // Set cookie
-    setRefreshCookie(res, refreshToken);
+    if (refreshToken) {
+      // Persist refresh token
+      user.refreshToken = refreshToken;
+      await user.save({ validateBeforeSave: false });
+      // Set cookie
+      setRefreshCookie(res, refreshToken);
+    } else {
+      user.refreshToken = null;
+      await user.save({ validateBeforeSave: false });
+    }
 
     await logActivity(user._id, 'login', 'Successful login', req);
 
-    res.json({
+    const responseBody = {
       success: true,
-      token: accessToken,
       user: {
         _id: user._id,
         name: user.name,
@@ -162,7 +172,10 @@ const login = async (req, res) => {
         avatar: user.avatar,
         isVerified: user.isVerified,
       },
-    });
+    };
+    if (accessToken) responseBody.token = accessToken;
+
+    res.json(responseBody);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -174,6 +187,10 @@ const login = async (req, res) => {
 // ─────────────────────────────────────────────
 const refreshToken = async (req, res) => {
   try {
+    if (process.env.DISABLE_JWT === 'true') {
+      return res.status(501).json({ success: false, message: 'Token refresh disabled' });
+    }
+
     const token = req.cookies.refreshToken;
     if (!token) {
       return res.status(401).json({ success: false, message: 'No refresh token provided' });
@@ -208,6 +225,9 @@ const refreshToken = async (req, res) => {
 // ─────────────────────────────────────────────
 const logout = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      return res.status(400).json({ success: false, message: 'No authenticated user to log out' });
+    }
     // Clear refresh token from DB
     await User.findByIdAndUpdate(req.user._id, { refreshToken: null });
 
@@ -366,17 +386,23 @@ const updatePassword = async (req, res) => {
     }
 
     user.password = newPassword;
-    // Rotate refresh token on password change for security
+    // Rotate refresh token on password change for security (may be disabled)
     const newRefreshToken = generateRefreshToken(user._id);
-    user.refreshToken = newRefreshToken;
-    await user.save();
-
-    setRefreshCookie(res, newRefreshToken);
+    if (newRefreshToken) {
+      user.refreshToken = newRefreshToken;
+      await user.save();
+      setRefreshCookie(res, newRefreshToken);
+    } else {
+      user.refreshToken = null;
+      await user.save();
+    }
 
     const accessToken = generateAccessToken(user._id, user.role);
     await logActivity(user._id, 'update_password', 'Password updated', req);
 
-    res.json({ success: true, token: accessToken, message: 'Password updated successfully' });
+    const resp = { success: true, message: 'Password updated successfully' };
+    if (accessToken) resp.token = accessToken;
+    res.json(resp);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -392,14 +418,19 @@ const googleCallback = async (req, res) => {
     const accessToken = generateAccessToken(user._id, user.role);
     const newRefreshToken = generateRefreshToken(user._id);
 
-    user.refreshToken = newRefreshToken;
-    await user.save({ validateBeforeSave: false });
-
-    setRefreshCookie(res, newRefreshToken);
+    if (newRefreshToken) {
+      user.refreshToken = newRefreshToken;
+      await user.save({ validateBeforeSave: false });
+      setRefreshCookie(res, newRefreshToken);
+    } else {
+      user.refreshToken = null;
+      await user.save({ validateBeforeSave: false });
+    }
 
     await logActivity(user._id, 'google_login', 'Logged in via Google OAuth', req);
 
-    res.redirect(`${process.env.CLIENT_URL}/auth/google/success?token=${accessToken}`);
+    const redirectUrl = `${process.env.CLIENT_URL}/auth/google/success` + (accessToken ? `?token=${accessToken}` : '');
+    res.redirect(redirectUrl);
   } catch (error) {
     res.redirect(`${process.env.CLIENT_URL}/auth/google/error`);
   }
