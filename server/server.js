@@ -1,4 +1,32 @@
 require('dotenv').config();
+const crypto = require('crypto');
+
+// Disable JWT entirely for now per user request unless explicitly set
+process.env.DISABLE_JWT = process.env.DISABLE_JWT || 'true';
+if (process.env.DISABLE_JWT === 'true') {
+  console.warn('INFO: JWT disabled (DISABLE_JWT=true). Token generation and verification are turned off.');
+} else {
+  // Ensure JWT secrets are present. In production, fail fast. In development, generate ephemeral secrets
+  if (!process.env.JWT_SECRET) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('FATAL: JWT_SECRET is not set. Set JWT_SECRET in environment variables.');
+      process.exit(1);
+    } else {
+      process.env.JWT_SECRET = crypto.randomBytes(64).toString('hex');
+      console.warn('WARNING: JWT_SECRET not set — generated temporary secret for development. Set JWT_SECRET to persist tokens across restarts.');
+    }
+  }
+
+  if (!process.env.JWT_REFRESH_SECRET) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('FATAL: JWT_REFRESH_SECRET is not set. Set JWT_REFRESH_SECRET in environment variables.');
+      process.exit(1);
+    } else {
+      process.env.JWT_REFRESH_SECRET = crypto.randomBytes(64).toString('hex');
+      console.warn('WARNING: JWT_REFRESH_SECRET not set — generated temporary refresh secret for development.');
+    }
+  }
+}
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
