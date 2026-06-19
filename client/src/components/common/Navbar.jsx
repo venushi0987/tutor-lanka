@@ -1,246 +1,306 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
-import { toggleTheme } from '../../store/slices/themeSlice';
-import { logout } from '../../store/slices/authSlice';
 import {
-  Sun, Moon, Menu, X, Bell, User, LogOut,
-  BookOpen, ChevronDown, GraduationCap, Shield,
-  Search
+  GraduationCap, Menu, X, ChevronDown, User, LayoutDashboard,
+  Settings, LogOut, Shield, BookOpen, Home, Compass
 } from 'lucide-react';
+import { logout } from '../../store/slices/authSlice';
+import toast from 'react-hot-toast';
+
+const roleColors = {
+  student: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  tutor: 'bg-blue-100 text-blue-700 border-blue-200',
+  admin: 'bg-red-100 text-red-700 border-red-200',
+};
+
+const dashboardPaths = {
+  student: '/dashboard/student',
+  tutor: '/dashboard/tutor',
+  admin: '/dashboard/admin',
+};
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { mode } = useSelector((state) => state.theme);
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const { unreadCount } = useSelector((state) => state.notifications);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { isAuthenticated, user } = useSelector(state => state.auth);
+
   const [scrolled, setScrolled] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   useEffect(() => {
     setMobileOpen(false);
-    setProfileOpen(false);
-  }, [location]);
+    setDropdownOpen(false);
+  }, [location.pathname]);
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logout());
+    toast.success('Logged out successfully');
     navigate('/');
   };
 
-  const navLinks = [
-    { label: 'Find Classes', href: '/explore', icon: <Search size={16} /> },
-    { label: 'Tutors', href: '/explore?tab=tutors', icon: <GraduationCap size={16} /> },
-  ];
-
-  const getDashboardLink = () => {
-    if (!user) return '/login';
-    return `/dashboard/${user.role}`;
+  const scrollToSection = (sectionId) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    }
+    setMobileOpen(false);
   };
 
+  const getInitials = (name) => name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'U';
+
+  const navLinks = [
+    { label: 'Home', action: () => scrollToSection('home-section'), icon: Home },
+    { label: 'Explore', href: '/explore', icon: Compass },
+    { label: 'About Us', action: () => scrollToSection('about-section'), icon: BookOpen },
+  ];
+
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 dark:bg-dark-900/80 backdrop-blur-xl shadow-lg border-b border-slate-200/50 dark:border-slate-700/50'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="container-custom">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform duration-300">
-              <BookOpen size={18} className="text-white" />
-            </div>
-            <div>
-              <span className="font-display font-bold text-lg text-slate-900 dark:text-white">
-                EduConnect
-              </span>
-              <span className="hidden sm:block text-xs text-primary-500 font-medium -mt-0.5">
-                Sri Lanka
-              </span>
-            </div>
-          </Link>
+          ? 'bg-white/90 backdrop-blur-xl shadow-lg shadow-slate-200/50 border-b border-slate-200/50'
+          : 'bg-white/80 backdrop-blur-md'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  location.pathname === link.href
-                    ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                }`}
-              >
-                {link.icon}
-                {link.label}
-              </Link>
-            ))}
-          </div>
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="w-9 h-9 bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] rounded-xl flex items-center justify-center shadow-md shadow-[#1c0da1]/30 group-hover:scale-105 transition-transform">
+                <GraduationCap className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="font-black text-[#1c0da1] text-base tracking-tight">EduConnect</span>
+                <span className="text-[10px] font-semibold text-[#d9cb00] tracking-widest uppercase -mt-0.5">Sri Lanka</span>
+              </div>
+            </Link>
 
-          {/* Right Side */}
-          <div className="flex items-center gap-2">
-            {/* Theme Toggle */}
-            <button
-              onClick={() => dispatch(toggleTheme())}
-              id="theme-toggle"
-              className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
-              aria-label="Toggle theme"
-            >
-              <AnimatePresence mode="wait">
-                {mode === 'dark' ? (
-                  <motion.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <Sun size={18} />
-                  </motion.div>
-                ) : (
-                  <motion.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <Moon size={18} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </button>
-
-            {isAuthenticated ? (
-              <>
-                {/* Notifications */}
-                <Link
-                  to={getDashboardLink()}
-                  className="relative p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
-                >
-                  <Bell size={18} />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </span>
-                  )}
-                </Link>
-
-                {/* Profile Dropdown */}
-                <div className="relative">
-                  <button
-                    id="profile-menu-btn"
-                    onClick={() => setProfileOpen(!profileOpen)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
+            {/* Desktop Nav Links */}
+            <div className="hidden md:flex items-center gap-1">
+              {navLinks.map(({ label, href, action, icon: Icon }) => (
+                href ? (
+                  <Link
+                    key={label}
+                    to={href}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                      location.pathname === href
+                        ? 'bg-[#1c0da1]/10 text-[#1c0da1]'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    }`}
                   >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center overflow-hidden">
+                    <Icon className="w-4 h-4" />
+                    {label}
+                  </Link>
+                ) : (
+                  <button
+                    key={label}
+                    onClick={action}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all"
+                  >
+                    <Icon className="w-4 h-4" />
+                    {label}
+                  </button>
+                )
+              ))}
+            </div>
+
+            {/* Right Side */}
+            <div className="flex items-center gap-3">
+              {!isAuthenticated ? (
+                <div className="hidden md:flex items-center gap-2">
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 text-sm font-semibold text-[#1c0da1] hover:bg-[#1c0da1]/5 rounded-xl transition-all"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-5 py-2 text-sm font-bold bg-[#1c0da1] text-white rounded-xl hover:bg-[#0a044a] transition-all shadow-md shadow-[#1c0da1]/30"
+                  >
+                    Register
+                  </Link>
+                </div>
+              ) : (
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-xl hover:bg-slate-100 transition-all group"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] flex items-center justify-center text-white text-xs font-bold shadow-md">
                       {user?.avatar ? (
-                        <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                        <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
                       ) : (
-                        <span className="text-white text-sm font-bold">{user?.name?.[0]?.toUpperCase()}</span>
+                        getInitials(user?.name)
                       )}
                     </div>
-                    <span className="hidden md:block text-sm font-medium text-slate-700 dark:text-slate-200 max-w-24 truncate">
-                      {user?.name?.split(' ')[0]}
-                    </span>
-                    <ChevronDown size={14} className={`text-slate-500 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
+                    <div className="hidden md:flex flex-col items-start leading-none">
+                      <span className="text-sm font-bold text-slate-800">{user?.name?.split(' ')[0]}</span>
+                      <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border mt-0.5 capitalize ${roleColors[user?.role] || 'bg-slate-100 text-slate-600'}`}>
+                        {user?.role}
+                      </span>
+                    </div>
+                    <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform hidden md:block ${dropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   <AnimatePresence>
-                    {profileOpen && (
+                    {dropdownOpen && (
                       <motion.div
                         initial={{ opacity: 0, y: 8, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                        transition={{ duration: 0.15 }}
-                        className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden z-50"
+                        transition={{ duration: 0.15, ease: 'easeOut' }}
+                        className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden z-50"
                       >
-                        <div className="px-4 py-3 bg-gradient-to-r from-primary-50 to-purple-50 dark:from-primary-900/30 dark:to-purple-900/30 border-b border-slate-200 dark:border-slate-700">
-                          <p className="font-semibold text-slate-900 dark:text-white truncate">{user?.name}</p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{user?.role}</p>
+                        <div className="px-4 py-3 bg-gradient-to-br from-[#1c0da1]/5 to-transparent border-b border-slate-100">
+                          <p className="text-sm font-bold text-slate-900">{user?.name}</p>
+                          <p className="text-xs text-slate-500 truncate">{user?.email}</p>
                         </div>
-                        <div className="p-2">
-                          <Link
-                            to={getDashboardLink()}
-                            className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-primary-50 dark:hover:bg-slate-700 transition-colors"
-                          >
-                            {user?.role === 'admin' ? <Shield size={15} /> : <User size={15} />}
-                            Dashboard
-                          </Link>
+                        <div className="py-1.5">
+                          <DropdownItem icon={User} label="My Profile" onClick={() => navigate('/profile')} />
+                          <DropdownItem
+                            icon={LayoutDashboard}
+                            label="Dashboard"
+                            onClick={() => navigate(dashboardPaths[user?.role] || '/')}
+                          />
+                          <DropdownItem icon={Settings} label="Settings" onClick={() => navigate('/settings')} />
+                        </div>
+                        <div className="border-t border-slate-100 py-1.5">
                           <button
                             onClick={handleLogout}
-                            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                            className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors"
                           >
-                            <LogOut size={15} />
-                            Sign Out
+                            <LogOut className="w-4 h-4" />
+                            Logout
                           </button>
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-              </>
-            ) : (
-              <div className="hidden md:flex items-center gap-2">
-                <Link to="/login" className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  Sign In
-                </Link>
-                <Link to="/register" className="btn-primary text-sm py-2 px-5">
-                  Get Started
-                </Link>
-              </div>
-            )}
+              )}
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
-            >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
+              {/* Mobile Hamburger */}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="md:hidden p-2 rounded-xl hover:bg-slate-100 transition-all text-slate-600"
+              >
+                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white dark:bg-dark-900 border-t border-slate-200 dark:border-slate-700 overflow-hidden"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-16 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-xl md:hidden"
           >
-            <div className="container-custom py-4 space-y-1">
-              {navLinks.map((link) => (
-                <Link key={link.href} to={link.href} className="flex items-center gap-2 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-primary-50 dark:hover:bg-slate-800 font-medium text-sm transition-colors">
-                  {link.icon} {link.label}
-                </Link>
-              ))}
-              {!isAuthenticated ? (
-                <div className="pt-2 space-y-2 border-t border-slate-200 dark:border-slate-700">
-                  <Link to="/login" className="block text-center px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-sm">Sign In</Link>
-                  <Link to="/register" className="block text-center btn-primary text-sm">Get Started</Link>
-                </div>
-              ) : (
-                <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
-                  <Link to={getDashboardLink()} className="flex items-center gap-2 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-primary-50 dark:hover:bg-slate-800 font-medium text-sm">
-                    <User size={15} /> Dashboard
+            <div className="px-4 py-4 space-y-1">
+              {navLinks.map(({ label, href, action, icon: Icon }) => (
+                href ? (
+                  <Link
+                    key={label}
+                    to={href}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-[#1c0da1]/5 hover:text-[#1c0da1] transition-all"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <Icon className="w-4 h-4" /> {label}
                   </Link>
-                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-3 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium text-sm">
-                    <LogOut size={15} /> Sign Out
+                ) : (
+                  <button
+                    key={label}
+                    onClick={action}
+                    className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-[#1c0da1]/5 hover:text-[#1c0da1] transition-all"
+                  >
+                    <Icon className="w-4 h-4" /> {label}
                   </button>
-                </div>
-              )}
+                )
+              ))}
+
+              <div className="border-t border-slate-100 pt-3 mt-3 space-y-1">
+                {!isAuthenticated ? (
+                  <>
+                    <Link to="/login" className="block px-4 py-3 rounded-xl text-sm font-semibold text-[#1c0da1] hover:bg-[#1c0da1]/5 transition-all" onClick={() => setMobileOpen(false)}>
+                      Sign In
+                    </Link>
+                    <Link to="/register" className="block px-4 py-3 rounded-xl text-sm font-bold bg-[#1c0da1] text-white hover:bg-[#0a044a] transition-all text-center" onClick={() => setMobileOpen(false)}>
+                      Register
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] flex items-center justify-center text-white text-xs font-bold">
+                        {getInitials(user?.name)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-slate-800">{user?.name}</p>
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${roleColors[user?.role]}`}>{user?.role}</span>
+                      </div>
+                    </div>
+                    <button onClick={() => { navigate('/profile'); setMobileOpen(false); }} className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-all">
+                      <User className="w-4 h-4" /> My Profile
+                    </button>
+                    <button onClick={() => { navigate(dashboardPaths[user?.role] || '/'); setMobileOpen(false); }} className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-all">
+                      <LayoutDashboard className="w-4 h-4" /> Dashboard
+                    </button>
+                    <button onClick={() => { navigate('/settings'); setMobileOpen(false); }} className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-all">
+                      <Settings className="w-4 h-4" /> Settings
+                    </button>
+                    <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-all">
+                      <LogOut className="w-4 h-4" /> Logout
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </>
   );
 };
+
+const DropdownItem = ({ icon: Icon, label, onClick }) => (
+  <button
+    onClick={onClick}
+    className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#1c0da1] transition-colors"
+  >
+    <Icon className="w-4 h-4" />
+    {label}
+  </button>
+);
 
 export default Navbar;

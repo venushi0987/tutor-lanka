@@ -1,108 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Facebook, Instagram, Youtube, Twitter, Heart, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-900 dark:bg-dark-950 text-slate-300">
-      <div className="container-custom py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
-                <BookOpen size={18} className="text-white" />
-              </div>
-              <div>
-                <span className="font-display font-bold text-lg text-white">EduConnect</span>
-                <p className="text-xs text-primary-400 -mt-0.5">Sri Lanka</p>
-              </div>
-            </Link>
-            <p className="text-sm text-slate-400 leading-relaxed mb-6">
-              Connecting students with the best tutors and tuition classes across Sri Lanka. Your journey to academic excellence starts here.
-            </p>
-            <div className="flex gap-3">
-              {[Facebook, Instagram, Youtube, Twitter].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-primary-600 flex items-center justify-center text-slate-400 hover:text-white transition-all duration-200 hover:scale-110">
-                  <Icon size={16} />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Links */}
+    <footer className="bg-slate-900 dark:bg-slate-950 text-slate-400 border-t border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h4 className="font-display font-semibold text-white mb-4">Platform</h4>
-            <ul className="space-y-2.5">
-              {[
-                { label: 'Find Classes', href: '/explore' },
-                { label: 'Find Tutors', href: '/explore?tab=tutors' },
-                { label: 'Become a Tutor', href: '/register?role=tutor' },
-                { label: 'For Students', href: '/register' },
-                { label: 'Pricing', href: '#' },
-              ].map((link) => (
-                <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-slate-400 hover:text-primary-400 transition-colors duration-200">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+            <span className="text-lg font-bold text-white font-display">EduConnect</span>
+            <p className="text-sm mt-2">Connecting students with the best tutors across Sri Lanka.</p>
+          </div>
+          <div>
+            <h4 className="text-white font-semibold mb-3">Platform</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link to="/explore" className="hover:text-white">Find Classes</Link></li>
+              <li><Link to="/register" className="hover:text-white">Become a Tutor</Link></li>
             </ul>
           </div>
-
-          {/* Subjects */}
           <div>
-            <h4 className="font-display font-semibold text-white mb-4">Popular Subjects</h4>
-            <ul className="space-y-2.5">
-              {['Mathematics', 'Science', 'English', 'ICT', 'Physics', 'Chemistry', 'Biology', 'Sinhala'].map((s) => (
-                <li key={s}>
-                  <Link to={`/explore?subject=${s}`} className="text-sm text-slate-400 hover:text-primary-400 transition-colors duration-200">
-                    {s}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <h4 className="text-white font-semibold mb-3">Contact</h4>
+            <p className="text-sm">Colombo, Sri Lanka</p>
+            <p className="text-sm">hello@educonnect.lk</p>
           </div>
-
-          {/* Contact */}
           <div>
-            <h4 className="font-display font-semibold text-white mb-4">Contact</h4>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2.5 text-sm text-slate-400">
-                <MapPin size={15} className="text-primary-400 flex-shrink-0" />
-                Colombo, Sri Lanka
-              </li>
-              <li className="flex items-center gap-2.5 text-sm text-slate-400">
-                <Mail size={15} className="text-primary-400 flex-shrink-0" />
-                hello@educonnect.lk
-              </li>
-              <li className="flex items-center gap-2.5 text-sm text-slate-400">
-                <Phone size={15} className="text-primary-400 flex-shrink-0" />
-                +94 11 234 5678
-              </li>
-            </ul>
-            <div className="mt-6">
-              <h5 className="text-sm font-medium text-white mb-2">Get the app</h5>
-              <div className="flex gap-2">
-                <div className="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-400 border border-slate-700">Google Play</div>
-                <div className="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-400 border border-slate-700">App Store</div>
-              </div>
+            <h4 className="text-white font-semibold mb-3">Follow Us</h4>
+            <div className="flex gap-4">
+              {/* Facebook SVG */}
+              <a href="#" className="hover:text-white">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.8z"/></svg>
+              </a>
+              {/* YouTube SVG */}
+              <a href="#" className="hover:text-white">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
             </div>
           </div>
         </div>
-
-        <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-slate-500">
-            © {new Date().getFullYear()} EduConnect Sri Lanka. All rights reserved.
-          </p>
-          <p className="text-sm text-slate-500 flex items-center gap-1">
-            Made with <Heart size={13} className="text-red-400 fill-current" /> in Sri Lanka
-          </p>
-          <div className="flex gap-6">
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((item) => (
-              <a key={item} href="#" className="text-xs text-slate-500 hover:text-primary-400 transition-colors">{item}</a>
-            ))}
-          </div>
+        <div className="border-t border-slate-800 mt-8 pt-6 text-center text-xs">
+          © {new Date().getFullYear()} EduConnect Sri Lanka. All rights reserved.
         </div>
       </div>
     </footer>
