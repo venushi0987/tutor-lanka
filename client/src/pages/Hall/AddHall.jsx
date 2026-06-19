@@ -10,6 +10,7 @@ const AddHall = () => {
     // Backend API: /api/halls
   };
 
+
   return (
     <div className="min-h-[calc(100vh-64px)] bg-slate-50 py-10 px-4 flex justify-center items-center">
       <div className="w-full max-w-3xl bg-white rounded-[32px] shadow-xl border border-slate-100 overflow-hidden flex flex-col md:flex-row min-h-[500px]">
