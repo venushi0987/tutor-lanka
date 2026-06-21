@@ -28,86 +28,36 @@ const Home = () => {
   return (
     <div className="w-full bg-slate-50 text-slate-900 scroll-smooth">
       
-      {/* ------------------ 🔮 1. HERO SECTION ------------------ */}
-      <section ref={homeRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-slate-950">
-        
-        {/* 3D Vertical Slices Container */}
-        <div className="absolute inset-0 flex h-full w-full pointer-events-none" style={{ perspective: '1500px' }}>
-          {stripes.map((_, index) => {
-            const leftOffset = index * sliceWidth;
-            
-            return (
-              <div 
-                key={index}
-                className="relative h-full transition-transform duration-1000 ease-in-out"
-                style={{
-                  width: `${sliceWidth}%`,
-                  transformStyle: 'preserve-3d',
-                  transform: currentBg === 1 ? 'rotateY(0deg)' : 'rotateY(180deg)',
-                  transitionDelay: `${index * 70}ms`, 
-                  zIndex: 5
-                }}
-              >
-                {/* Front Side Layer - Image 1 */}
-                <div 
-                  className="absolute inset-0 h-full overflow-hidden"
-                  style={{ backfaceVisibility: 'hidden' }}
-                >
-                  <div 
-                    className="absolute h-full"
-                    style={{
-                      width: '100vw',
-                      left: `-${leftOffset}vw`, 
-                      backgroundImage: `url('/bg1.png')`,
-                      backgroundPosition: 'center center',
-                      backgroundSize: 'cover',
-                    }}
-                  />
-                </div>
+      {/* ------------------ 🔮 1. HERO SECTION (Refreshed) ------------------ */}
+          <section id="home-section" ref={homeRef} role="banner" aria-label="Hero" className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-hero-gradient dark:bg-dark-950">
 
-                {/* Back Side Layer - Image 2 */}
-                <div 
-                  className="absolute inset-0 h-full overflow-hidden"
-                  style={{
-                    transform: 'rotateY(180deg)',
-                    backfaceVisibility: 'hidden',
-                  }}
-                >
-                  <div 
-                    className="absolute h-full"
-                    style={{
-                      width: '100vw',
-                      left: `-${leftOffset}vw`,
-                      backgroundImage: `url('/bg2.png')`,
-                      backgroundPosition: 'center center',
-                      backgroundSize: 'cover',
-                    }}
-                  />
-                </div>
+            {/* Decorative floating shapes (subtle, performant) */}
+            <div className="absolute -left-16 -top-16 w-80 h-80 rounded-full bg-primary-600/20 blur-3xl animate-float pointer-events-none" />
+            <div className="absolute right-8 top-24 w-48 h-48 rounded-full bg-primary-400/15 blur-2xl animate-pulse-slow pointer-events-none" />
+            <div className="absolute left-1/2 bottom-8 transform -translate-x-1/2 w-96 h-40 rounded-3xl bg-gradient-to-r from-primary-500/10 via-primary-400/6 to-primary-600/8 blur-xl pointer-events-none" />
+
+            {/* Soft overlay for contrast */}
+            <div className="absolute inset-0 bg-black/40 z-10" />
+
+            {/* Foreground Content */}
+            <div className="relative z-20 text-center px-4">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white/95 drop-shadow-lg">
+                <span className="gradient-text">Find your Tutor</span>
+              </h1>
+              <p className="text-base md:text-xl text-slate-200 mt-4 max-w-2xl mx-auto">
+                Discover verified tutors and tailored classes across Sri Lanka — fast, trusted, and local.
+              </p>
+              <div className="mt-8 flex items-center justify-center gap-4">
+                <button onClick={() => navigate('/explore')} className="btn-primary" aria-label="Start searching tutors">
+                  🔍 Start Searching
+                </button>
+                <button onClick={() => navigate('/register')} className="btn-secondary" aria-label="Register as a tutor">
+                  Become a Tutor
+                </button>
               </div>
-            );
-          })}
-        </div>
+            </div>
 
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-slate-950/45 z-10" />
-
-        {/* Foreground Content */}
-        <div className="relative z-20 text-center text-white px-4">
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight drop-shadow-lg text-[#d9cb00]">
-            Find your Tutor
-          </h1>
-          <p className="text-lg md:text-2xl font-medium mt-4 text-slate-100 drop-shadow-md max-w-2xl mx-auto">
-            Discover the best teachers and private classes in Sri Lanka instantly
-          </p>
-          <button 
-            onClick={() => navigate('/explore')} 
-            className="mt-8 px-8 py-3.5 bg-[#1c0da1] hover:bg-[#d9cb00] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#1c0da1]/30 transform hover:-translate-y-0.5"
-          >
-            🔍 Start Searching Now
-          </button>
-        </div>
-      </section>
+          </section>
 
       {/* ------------------ 🔍 2. EXPLORE SECTION ------------------ */}
       <section id="explore-section" ref={exploreRef} className="py-24 px-6 max-w-7xl mx-auto border-b border-slate-200">
