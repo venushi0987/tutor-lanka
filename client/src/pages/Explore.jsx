@@ -10,11 +10,19 @@ const Explore = () => {
       
       {/* Search Bar */}
       <div className="w-full max-w-xl mb-8">
-        <input 
-          type="text" 
-          placeholder="Search subjects, tutors, or locations..." 
-          className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-        />
+        <form role="search" aria-label="Explore tutors search" className="w-full">
+          <label htmlFor="explore-search" className="sr-only">Search tutors, subjects or locations</label>
+          <div className="relative">
+            <input
+              id="explore-search"
+              name="q"
+              type="search"
+              placeholder="Search subjects, tutors, or locations..."
+              className="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
+            />
+            <button type="submit" aria-label="Search" className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-600 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-primary-700 transition-colors">Search</button>
+          </div>
+        </form>
       </div>
 
       {/* Placeholder Grid */}
@@ -26,7 +34,7 @@ const Explore = () => {
             <p className="text-sm text-slate-500 mt-2">By Expert Tutor • Colombo & Online</p>
             <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
               <span className="font-bold text-slate-900 dark:text-white">Rs. 3,500/mo</span>
-              <button className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">View Details</button>
+              <button aria-label="View class details" className="text-sm font-semibold text-primary-600 hover:text-primary-700">View Details</button>
             </div>
           </div>
         ))}
