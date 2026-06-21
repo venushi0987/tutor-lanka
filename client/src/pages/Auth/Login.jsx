@@ -117,7 +117,7 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Email */}
             <div>
-              <label className="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Email Address</label>
+              <label className="input-label">Email Address</label>
               <div className="relative flex items-center">
                 <Mail className="absolute left-4 w-4 h-4 text-slate-400" />
                 <input
@@ -127,9 +127,7 @@ const Login = () => {
                   })}
                   type="email"
                   placeholder="you@example.com"
-                  className={`w-full pl-11 pr-4 py-4 bg-slate-50 rounded-2xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                    errors.email ? 'border-red-300 focus:ring-red-200' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
-                  }`}
+                  className={`input pl-11 ${errors.email ? 'border-red-300 focus:ring-red-200' : ''}`}
                 />
               </div>
               {errors.email && <p className="text-xs text-red-500 mt-1 font-medium">{errors.email.message}</p>}
@@ -137,16 +135,14 @@ const Login = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Password</label>
+              <label className="input-label">Password</label>
               <div className="relative flex items-center">
                 <Lock className="absolute left-4 w-4 h-4 text-slate-400" />
                 <input
                   {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Minimum 6 characters' } })}
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
-                  className={`w-full pl-11 pr-16 py-4 bg-slate-50 rounded-2xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                    errors.password ? 'border-red-300' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
-                  }`}
+                  className={`input pl-11 pr-16 ${errors.password ? 'border-red-300' : ''}`}
                 />
                 <button
                   type="button"
