@@ -64,11 +64,16 @@ const AddHall = () => {
     }
   };
 
-<<<<<<< Updated upstream
-=======
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!token) { toast.error('You must be logged in.'); return; }
+    
+    // Validate required fields
+    if (!hallData.name.trim()) { toast.error('Hall name is required'); return; }
+    if (!hallData.address.trim()) { toast.error('Address is required'); return; }
+    if (!hallData.capacity || parseInt(hallData.capacity) <= 0) { toast.error('Valid capacity is required'); return; }
+    if (!hallData.hourlyRate || parseFloat(hallData.hourlyRate) < 0) { toast.error('Valid hourly rate is required'); return; }
+
     setLoading(true);
     try {
       let coords = hallData.coords;
@@ -80,16 +85,16 @@ const AddHall = () => {
       }
 
       const formData = new FormData();
-      formData.append('name', hallData.name);
-      formData.append('address', hallData.address);
-      formData.append('capacity', hallData.capacity);
-      formData.append('hourlyRate', hallData.hourlyRate);
+      formData.append('name', hallData.name.trim());
+      formData.append('address', hallData.address.trim());
+      formData.append('capacity', parseInt(hallData.capacity));
+      formData.append('hourlyRate', parseFloat(hallData.hourlyRate));
       formData.append('amenities', JSON.stringify(hallData.amenities));
 
       if (coords) {
         formData.append('location', JSON.stringify({
           type: 'Point',
-          coordinates: [coords.lon, coords.lat], // [lng, lat]
+          coordinates: [parseFloat(coords.lon), parseFloat(coords.lat)], // [lng, lat]
         }));
       } else {
         // Sensible default (Colombo coordinates: [lng, lat])
@@ -103,18 +108,22 @@ const AddHall = () => {
         formData.append('image', imageFile);
       }
 
-      await axios.post(`${API}/halls`, formData, {
+      const res = await axios.post(`${API}/halls`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
+      
+      console.log('Hall created successfully:', res.data);
       toast.success('🏫 Hall listed successfully!', { duration: 4000 });
       navigate('/dashboard/hall');
     } catch (err) {
+      console.error('Hall error - Full error object:', err);
+      console.error('Hall error - Response:', err.response);
+      console.error('Hall error - Response data:', err.response?.data);
       const msg = err.response?.data?.message || err.message || 'Failed to list hall';
       toast.error(msg);
-      console.error('Hall error:', err.response?.data || err.message);
     } finally {
       setLoading(false);
     }
@@ -123,7 +132,6 @@ const AddHall = () => {
   const inputCls = "w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] focus:ring-2 focus:ring-[#1c0da1]/10 text-sm transition-all";
   const labelCls = "text-xs font-bold text-slate-600 block mb-1.5 uppercase tracking-wider";
 
->>>>>>> Stashed changes
   return (
     <div className="min-h-[calc(100vh-64px)] bg-slate-50 py-10 px-4">
       <div className="max-w-3xl mx-auto">

@@ -97,7 +97,7 @@ const AddClass = () => {
     setLoading(true);
     try {
       // 1. Update teacher profile
-      await axios.put(`${API}/auth/profile`, {
+      await axios.put(`${API}/tutors/profile`, {
         name: profileData.displayName,
         phone: profileData.phone,
         gender: profileData.gender,
