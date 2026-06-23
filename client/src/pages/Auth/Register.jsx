@@ -5,6 +5,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'student' });
 
+<<<<<<< Updated upstream
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -14,6 +15,44 @@ const Register = () => {
     console.log('Register Submitting:', formData);
     navigate('/login');
   };
+=======
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({
+    defaultValues: { role: 'student' }
+  });
+
+  const strength = getPasswordStrength(passwordValue);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', hall_owner: '/dashboard/hall', admin: '/dashboard/admin' };
+      navigate(paths[user.role] || '/', { replace: true });
+    }
+  }, [isAuthenticated, user, navigate]);
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
+
+  const onSubmit = async (data) => {
+    const { confirmPassword, ...payload } = data;
+    const result = await dispatch(registerUser(payload));
+    if (registerUser.fulfilled.match(result)) {
+      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', hall_owner: '/dashboard/hall', admin: '/dashboard/admin' };
+      toast.success(`Welcome to EduConnect, ${result.payload.user.name.split(' ')[0]}! 🎉`);
+      navigate(paths[result.payload.user.role] || '/', { replace: true });
+    } else {
+      toast.error(result.payload || 'Registration failed');
+    }
+  };
+
+  const roleOptions = [
+    { value: 'student', label: 'Student / Parent', icon: '🎓', desc: 'Find and book tutors' },
+    { value: 'tutor', label: 'Tutor / Teacher', icon: '👨‍🏫', desc: 'Offer your classes' },
+    { value: 'hall_owner', label: 'Class Hall Owner', icon: '🏫', desc: 'Rent your venue' },
+  ];
+
+  const selectedRole = watch('role');
+>>>>>>> Stashed changes
 
   return (
     <div className="h-[calc(100vh-64px)] w-full flex bg-white overflow-hidden">
@@ -33,10 +72,44 @@ const Register = () => {
             <h2 className="text-4xl font-extrabold text-slate-800 tracking-tight">Sign up</h2>
           </div>
 
+<<<<<<< Updated upstream
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative flex items-center">
               <span className="absolute left-4">📝</span>
               <input type="text" name="name" required value={formData.name} onChange={handleChange} placeholder="Full Name" className="w-full pl-12 pr-4 py-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 focus:border-[#1c0da1] text-sm font-medium" />
+=======
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-5 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 font-medium flex items-center gap-2"
+            >
+              <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0" />
+              {error}
+            </motion.div>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Role Selection */}
+            <div>
+              <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">I am a...</label>
+              <div className="grid grid-cols-3 gap-2">
+                {roleOptions.map(({ value, label, icon, desc }) => (
+                  <label key={value} className="cursor-pointer">
+                    <input type="radio" value={value} {...register('role')} className="sr-only" />
+                    <div className={`p-3 rounded-xl border-2 transition-all text-center ${
+                      selectedRole === value
+                        ? 'border-[#1c0da1] bg-[#1c0da1]/5'
+                        : 'border-slate-200 hover:border-slate-300'
+                    }`}>
+                      <div className="text-2xl mb-1">{icon}</div>
+                      <p className="text-xs font-bold text-slate-800">{label}</p>
+                      <p className="text-[10px] text-slate-400 mt-0.5">{desc}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+>>>>>>> Stashed changes
             </div>
 
             <div className="relative flex items-center">

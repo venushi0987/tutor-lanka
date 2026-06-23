@@ -1,5 +1,32 @@
+<<<<<<< Updated upstream
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+=======
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  GraduationCap, Menu, X, ChevronDown, User, LayoutDashboard,
+  Settings, LogOut, Shield, BookOpen, Home, Compass
+} from 'lucide-react';
+import { logout } from '../../store/slices/authSlice';
+import toast from 'react-hot-toast';
+
+const roleColors = {
+  student: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  tutor: 'bg-blue-100 text-blue-700 border-blue-200',
+  hall_owner: 'bg-amber-100 text-amber-700 border-amber-200',
+  admin: 'bg-red-100 text-red-700 border-red-200',
+};
+
+const dashboardPaths = {
+  student: '/dashboard/student',
+  tutor: '/dashboard/tutor',
+  hall_owner: '/dashboard/hall',
+  admin: '/dashboard/admin',
+};
+>>>>>>> Stashed changes
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -31,6 +58,25 @@ const Navbar = () => {
     }
   };
 
+<<<<<<< Updated upstream
+=======
+  const getInitials = (name) => name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'U';
+
+  const navLinks = [
+    { label: 'Home', action: () => scrollToSection('home-section'), icon: Home },
+    { label: 'Explore', href: '/explore', icon: Compass },
+    { label: 'About Us', action: () => scrollToSection('about-section'), icon: BookOpen },
+  ];
+
+  if (isAuthenticated && user) {
+    navLinks.push({
+      label: 'Dashboard',
+      href: dashboardPaths[user.role] || '/',
+      icon: LayoutDashboard,
+    });
+  }
+
+>>>>>>> Stashed changes
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/80 z-50 px-6 flex items-center justify-between">
       {/* Brand Logo - Goes directly to top of Home */}

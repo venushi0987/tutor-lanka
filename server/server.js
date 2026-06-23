@@ -17,6 +17,9 @@ const classRoutes = require('./routes/classes');
 const reviewRoutes = require('./routes/reviews');
 const studentRoutes = require('./routes/students');
 const adminRoutes = require('./routes/admin');
+const courseRoutes = require('./routes/courses');
+const hallRoutes = require('./routes/halls');
+const enrollmentRoutes = require('./routes/enrollments');
 
 const app = express();
 const server = http.createServer(app);
@@ -46,6 +49,9 @@ app.use('/api/classes', classRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/courses', courseRoutes);
+app.use('/api/halls', hallRoutes);
+app.use('/api/enrollments', enrollmentRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ success: true, message: 'EduConnect API is running 🚀' }));
