@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const TutorProfile = require('../models/TutorProfile');
-const generateToken = require('../utils/generateToken');
+const { generateToken, generateAccessToken, generateRefreshToken } = require('../utils/generateToken');
 const passport = require('passport');
 
 // @desc    Register user
@@ -25,10 +25,7 @@ const register = async (req, res) => {
     const token = generateToken(user._id);
     res.status(201).json({
       success: true,
-<<<<<<< Updated upstream
       token,
-      user: { _id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
-=======
       user: {
         _id: user._id,
         name: user.name,
@@ -37,35 +34,39 @@ const register = async (req, res) => {
         avatar: user.avatar,
         isVerified: user.isVerified,
       },
-    };
-    if (accessToken) responseBody.token = accessToken;
-
-    res.status(201).json(responseBody);
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ─────────────────────────────────────────────
-// @desc    Login user
+// @desc    Login user (With Account Locking & Cookies)
 // @route   POST /api/auth/login
-// ─────────────────────────────────────────────
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Email and password are required' });
+    }
+
     const user = await User.findOne({ email }).select('+password +loginAttempts +lockUntil +refreshToken');
-    if (!user || !user.password) {
+    if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
     // Check if account is locked
-    if (user.isLocked()) {
-      const waitMinutes = Math.ceil((user.lockUntil - Date.now()) / 60000);
-      return res.status(423).json({
-        success: false,
-        message: `Account locked due to too many failed attempts. Try again in ${waitMinutes} minute(s).`,
-      });
+    if (user.lockUntil) {
+      const lockTime = new Date(user.lockUntil).getTime();
+      const now = Date.now();
+      if (lockTime > now) {
+        const waitMinutes = Math.ceil((lockTime - now) / 60000);
+        return res.status(423).json({
+          success: false,
+          message: `Account locked. Try again in ${waitMinutes} minute(s).`,
+        });
+      }
     }
 
     // Check active status
@@ -73,49 +74,57 @@ const login = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Account has been deactivated' });
     }
 
-    const isMatch = await user.matchPassword(password);
+    // Match password
+    let isMatch = false;
+    try {
+      isMatch = await user.matchPassword(password);
+    } catch (err) {
+      console.error('Password match error:', err);
+      return res.status(500).json({ success: false, message: 'Authentication error' });
+    }
 
     if (!isMatch) {
       // Increment login attempts
       user.loginAttempts = (user.loginAttempts || 0) + 1;
       if (user.loginAttempts >= 5) {
-        // Lock for 30 minutes
         user.lockUntil = new Date(Date.now() + 30 * 60 * 1000);
-        await user.save({ validateBeforeSave: false });
-        await logActivity(user._id, 'account_locked', 'Account locked after 5 failed login attempts', req);
-        return res.status(423).json({
-          success: false,
-          message: 'Too many failed attempts. Account locked for 30 minutes.',
-        });
       }
-      await user.save({ validateBeforeSave: false });
+      try {
+        await user.save({ validateBeforeSave: false });
+      } catch (err) {
+        console.error('Save after failed login error:', err);
+      }
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
     // Successful login — reset attempts
     user.loginAttempts = 0;
     user.lockUntil = null;
-    user.lastSeen = Date.now();
+    user.lastSeen = new Date();
 
-    // Generate tokens (may be null when JWT is disabled)
-    const accessToken = generateAccessToken(user._id, user.role);
-    const refreshToken = generateRefreshToken(user._id);
-
-    if (refreshToken) {
-      // Persist refresh token
-      user.refreshToken = refreshToken;
-      await user.save({ validateBeforeSave: false });
-      // Set cookie
-      setRefreshCookie(res, refreshToken);
-    } else {
-      user.refreshToken = null;
-      await user.save({ validateBeforeSave: false });
+    // Generate tokens
+    let accessToken, refreshTokenValue;
+    try {
+      accessToken = generateAccessToken(user._id, user.role);
+      refreshTokenValue = generateRefreshToken(user._id);
+    } catch (err) {
+      console.error('Token generation error:', err);
+      return res.status(500).json({ success: false, message: 'Token generation failed' });
     }
 
-    await logActivity(user._id, 'login', 'Successful login', req);
+    if (refreshTokenValue) {
+      user.refreshToken = refreshTokenValue;
+    }
 
-    const responseBody = {
+    try {
+      await user.save({ validateBeforeSave: false });
+    } catch (err) {
+      console.error('Save after successful login error:', err);
+    }
+
+    res.json({
       success: true,
+      token: accessToken,
       user: {
         _id: user._id,
         name: user.name,
@@ -124,30 +133,27 @@ const login = async (req, res) => {
         avatar: user.avatar,
         isVerified: user.isVerified,
       },
-    };
-    if (accessToken) responseBody.token = accessToken;
-
-    res.json(responseBody);
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error('Login error:', error);
+    res.status(500).json({ success: false, message: error.message || 'Login failed' });
   }
 };
 
-// ─────────────────────────────────────────────
 // @desc    Refresh access token
 // @route   POST /api/auth/refresh-token
-// ─────────────────────────────────────────────
 const refreshToken = async (req, res) => {
   try {
     if (process.env.DISABLE_JWT === 'true') {
       return res.status(501).json({ success: false, message: 'Token refresh disabled' });
     }
 
-    const token = req.cookies.refreshToken;
+    const token = req.cookies ? req.cookies.refreshToken : null;
     if (!token) {
       return res.status(401).json({ success: false, message: 'No refresh token provided' });
     }
 
+    const jwt = require('jsonwebtoken');
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
@@ -164,29 +170,24 @@ const refreshToken = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Account deactivated' });
     }
 
-    const newAccessToken = generateAccessToken(user._id, user.role);
+    const newAccessToken = typeof generateAccessToken === 'function' ? generateAccessToken(user._id, user.role) : generateToken(user._id);
     res.json({ success: true, token: newAccessToken });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ─────────────────────────────────────────────
 // @desc    Logout user
 // @route   POST /api/auth/logout
-// ─────────────────────────────────────────────
 const logout = async (req, res) => {
   try {
     if (!req.user || !req.user._id) {
       return res.status(400).json({ success: false, message: 'No authenticated user to log out' });
     }
-    // Clear refresh token from DB
     await User.findByIdAndUpdate(req.user._id, { refreshToken: null });
 
-    // Clear cookie
-    res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'lax', secure: false });
-
-    await logActivity(req.user._id, 'logout', 'User logged out', req);
+    if (res.clearCookie) res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'lax', secure: false });
+    if (typeof logActivity === 'function') await logActivity(req.user._id, 'logout', 'User logged out', req);
 
     res.json({ success: true, message: 'Logged out successfully' });
   } catch (error) {
@@ -194,10 +195,8 @@ const logout = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────
 // @desc    Get current user with profile
 // @route   GET /api/auth/me
-// ─────────────────────────────────────────────
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).lean();
@@ -206,7 +205,7 @@ const getMe = async (req, res) => {
     let profile = null;
     if (user.role === 'tutor') {
       profile = await TutorProfile.findOne({ userId: user._id }).lean();
-    } else if (user.role === 'student') {
+    } else if (user.role === 'student' && typeof StudentProfile !== 'undefined') {
       profile = await StudentProfile.findOne({ userId: user._id }).lean();
     }
 
@@ -216,10 +215,8 @@ const getMe = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────
 // @desc    Update profile (name, phone, bio, avatar)
 // @route   PUT /api/auth/profile
-// ─────────────────────────────────────────────
 const updateProfile = async (req, res) => {
   try {
     const { name, phone, gender, bio, address, locationCoords, dateOfBirth, grade, qualifications } = req.body;
@@ -244,10 +241,8 @@ const updateProfile = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────
 // @desc    Forgot password — generate reset token
 // @route   POST /api/auth/forgot-password
-// ─────────────────────────────────────────────
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -255,68 +250,24 @@ const forgotPassword = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      // Generic response to prevent user enumeration
       return res.json({ success: true, message: 'If an account with that email exists, a reset link has been sent.' });
     }
 
-    // Generate raw token
+    const crypto = require('crypto');
     const rawToken = crypto.randomBytes(32).toString('hex');
-    // Store hashed version
     user.passwordResetToken = crypto.createHash('sha256').update(rawToken).digest('hex');
-    user.passwordResetExpire = Date.now() + 15 * 60 * 1000; // 15 minutes
+    user.passwordResetExpire = Date.now() + 15 * 60 * 1000;
     await user.save({ validateBeforeSave: false });
 
-    // In production, send email. For now, log it.
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${rawToken}`;
     console.log(`[PASSWORD RESET] User: ${user.email} | Reset URL: ${resetUrl}`);
 
-    await logActivity(user._id, 'forgot_password', 'Password reset requested', req);
+    if (typeof logActivity === 'function') await logActivity(user._id, 'forgot_password', 'Password reset requested', req);
 
     res.json({
       success: true,
       message: 'If an account with that email exists, a reset link has been sent.',
->>>>>>> Stashed changes
     });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// @desc    Login user
-// @route   POST /api/auth/login
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ success: false, message: 'Email and password are required' });
-
-    const user = await User.findOne({ email }).select('+password');
-    if (!user || !user.password) return res.status(401).json({ success: false, message: 'Invalid credentials' });
-
-    const isMatch = await user.matchPassword(password);
-    if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid credentials' });
-
-    if (!user.isActive) return res.status(403).json({ success: false, message: 'Account has been deactivated' });
-
-    user.lastSeen = Date.now();
-    await user.save({ validateBeforeSave: false });
-
-    const token = generateToken(user._id);
-    res.json({
-      success: true,
-      token,
-      user: { _id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// @desc    Get current user
-// @route   GET /api/auth/me
-const getMe = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    res.json({ success: true, user });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -345,4 +296,4 @@ const googleCallback = async (req, res) => {
   res.redirect(`${process.env.CLIENT_URL}/auth/google/success?token=${token}`);
 };
 
-module.exports = { register, login, getMe, updatePassword, googleCallback };
+module.exports = { register, login, refreshToken, logout, getMe, updateProfile, forgotPassword, updatePassword, googleCallback };
