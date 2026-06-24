@@ -7,6 +7,8 @@ import {
   Settings, LogOut, Shield, BookOpen, Home, Compass
 } from 'lucide-react';
 import { logout } from '../../store/slices/authSlice';
+import { initSocket } from '../../services/socket';
+import NotificationsDropdown from './NotificationsDropdown';
 import toast from 'react-hot-toast';
 
 const roleColors = {
@@ -18,6 +20,7 @@ const roleColors = {
 const dashboardPaths = {
   student: '/dashboard/student',
   tutor: '/dashboard/tutor',
+  institute: '/dashboard/institute',
   admin: '/dashboard/admin',
 };
 
@@ -30,7 +33,10 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const notificationsRef = useRef(null);
+  const unreadCount = useSelector(s => s.notifications.unreadCount);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -43,6 +49,9 @@ const Navbar = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
       }
+      if (notificationsRef.current && !notificationsRef.current.contains(e.target)) {
+        setNotificationsOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -51,7 +60,16 @@ const Navbar = () => {
   useEffect(() => {
     setMobileOpen(false);
     setDropdownOpen(false);
+    setNotificationsOpen(false);
   }, [location.pathname]);
+
+  // initialize socket when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const s = initSocket();
+      return () => { if (s) s.disconnect(); };
+    }
+  }, [isAuthenticated]);
 
   const handleLogout = async () => {
     await dispatch(logout());
@@ -149,7 +167,22 @@ const Navbar = () => {
                   </Link>
                 </div>
               ) : (
-                <div className="relative" ref={dropdownRef}>
+                <div className="relative flex items-center" ref={dropdownRef}>
+                  {/* Notifications bell */}
+                  <div className="relative mr-3">
+                    <button aria-label="Notifications" onClick={() => setNotificationsOpen(!notificationsOpen)} className="p-2 rounded-xl hover:bg-slate-100">
+                      <svg className="w-5 h-5 text-slate-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                      </svg>
+                      {/* badge */}
+                      {unreadCount > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{unreadCount}</span>
+                      )}
+                    </button>
+                    {/* notifications dropdown */}
+                    {notificationsOpen && <div ref={notificationsRef} className="absolute right-0 mt-2 z-50"><NotificationsDropdown /></div>}
+                  </div>
+
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
                     aria-haspopup="menu"
