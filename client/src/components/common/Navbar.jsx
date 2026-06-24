@@ -81,7 +81,9 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      {/* Skip link for keyboard users */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:sr-only focus:px-4 focus:py-2 focus:bg-white focus:text-slate-900 focus:rounded-md">Skip to content</a>
+      <nav role="navigation" aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-white/90 backdrop-blur-xl shadow-lg shadow-slate-200/50 border-b border-slate-200/50'
           : 'bg-white/80 backdrop-blur-md'
@@ -150,7 +152,9 @@ const Navbar = () => {
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-xl hover:bg-slate-100 transition-all group"
+                    aria-haspopup="menu"
+                    aria-expanded={dropdownOpen}
+                    className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-xl hover:bg-slate-100 transition-all group focus:outline-none focus:ring-2 focus:ring-primary-400"
                   >
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] flex items-center justify-center text-white text-xs font-bold shadow-md">
                       {user?.avatar ? (
@@ -208,7 +212,9 @@ const Navbar = () => {
               {/* Mobile Hamburger */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="md:hidden p-2 rounded-xl hover:bg-slate-100 transition-all text-slate-600"
+                aria-label="Toggle menu"
+                aria-expanded={mobileOpen}
+                className="md:hidden p-2 rounded-xl hover:bg-slate-100 transition-all text-slate-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
               >
                 {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
