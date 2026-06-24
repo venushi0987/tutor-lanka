@@ -1,12 +1,33 @@
 import React, { useState } from 'react';
+import LocationPicker from '../../components/common/LocationPicker';
+import { useDispatch } from 'react-redux';
+import { createClass } from '../../store/slices/classSlice';
 
 const AddClass = () => {
-  const [classData, setClassData] = useState({ title: '', subject: '', grade: '', fee: '', type: 'Online', description: '' });
+  const dispatch = useDispatch();
+  const [classData, setClassData] = useState({ title: '', subject: '', grade: '', fee: '', teachingMethod: 'Online', description: '', language: 'Sinhala' });
+  const [banner, setBanner] = useState(null);
+  const [coords, setCoords] = useState([79.86, 6.9]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Class Added:', classData);
-    alert('Class saved successfully!');
+    const fd = new FormData();
+    fd.append('title', classData.title);
+    fd.append('subject', classData.subject);
+    fd.append('grade', classData.grade);
+    fd.append('fee', classData.fee);
+    fd.append('teachingMethod', classData.teachingMethod);
+    fd.append('description', classData.description);
+    fd.append('language', classData.language);
+    if (banner) fd.append('banner', banner);
+    const location = { district: '', city: '', address: '', coordinates: { type: 'Point', coordinates: coords } };
+    fd.append('location', JSON.stringify(location));
+    try {
+      await dispatch(createClass(fd)).unwrap();
+      alert('Class published successfully');
+    } catch (err) {
+      console.error(err); alert('Failed to publish');
+    }
   };
 
   return (
@@ -44,7 +65,7 @@ const AddClass = () => {
             </div>
             <div>
               <label className="text-xs font-bold text-slate-600 block mb-1">Class Type</label>
-              <select className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#1c0da1] text-sm bg-white cursor-pointer" onChange={(e) => setClassData({...classData, type: e.target.value})}>
+              <select className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#1c0da1] text-sm bg-white cursor-pointer" onChange={(e) => setClassData({...classData, teachingMethod: e.target.value})}>
                 <option value="Online">🌐 Online</option>
                 <option value="Physical">🏫 Physical</option>
                 <option value="Home Visit">🏠 Home Visit</option>
@@ -55,6 +76,16 @@ const AddClass = () => {
           <div>
             <label className="text-xs font-bold text-slate-600 block mb-1">Description / Schedule Details</label>
             <textarea rows="4" placeholder="Mention class days, times, and coverage details..." className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#1c0da1] text-sm resize-none" onChange={(e) => setClassData({...classData, description: e.target.value})}></textarea>
+          </div>
+
+          <div>
+            <label className="text-xs font-bold">Upload Banner</label>
+            <input type="file" accept="image/*" onChange={(e) => setBanner(e.target.files[0])} />
+          </div>
+
+          <div>
+            <label className="text-xs font-bold">Pick Location</label>
+            <LocationPicker initial={[6.9,79.86]} onChange={(lnglat)=>setCoords(lnglat)} />
           </div>
 
           <button type="submit" className="w-full py-3.5 bg-[#1c0da1] text-white font-bold rounded-xl hover:bg-[#0a044a] transition-all text-sm shadow-md mt-2">Publish Class</button>
