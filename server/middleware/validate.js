@@ -25,7 +25,7 @@ const validateRegister = [
     .withMessage('Password must be at least 6 characters'),
   body('role')
     .optional()
-    .isIn(['student', 'tutor'])
+    .isIn(['student', 'tutor', 'institute'])
     .withMessage('Invalid role'),
   handleValidation,
 ];
