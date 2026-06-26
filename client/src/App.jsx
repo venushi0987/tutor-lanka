@@ -21,8 +21,11 @@ const UserProfile = lazy(() => import('./pages/Profile/UserProfile'));
 const InstituteDashboard = lazy(() => import('./pages/InstituteDashboard'));
 const InstituteProfileEdit = lazy(() => import('./pages/InstituteProfileEdit'));
 const InstituteClasses = lazy(() => import('./pages/Institute/InstituteClasses'));
+const InstituteAddClass = lazy(() => import('./pages/Institute/InstituteAddClass'));
+const InstitutePublicProfile = lazy(() => import('./pages/Institute/InstitutePublicProfile'));
 const Branches = lazy(() => import('./pages/Institute/Branches'));
 const MapSearch = lazy(() => import('./pages/Student/MapSearch'));
+const InstituteLogin = lazy(() => import('./pages/Auth/InstituteLogin'));
 
 // =========================================================
 // 🛠️ TEMPORARY DASHBOARD PLACEHOLDERS (To prevent Vite import errors)
@@ -82,10 +85,13 @@ const App = () => {
               <Route path="/dashboard/hall" element={<HallDashboard />} />
               <Route path="/add-hall" element={<AddHall />} />
 
-              {/* Institute area */}
+              {/* Institute Portal */}
+              <Route path="/institute/login" element={<InstituteLogin />} />
+              <Route path="/institute/:slug" element={<InstitutePublicProfile />} />
               <Route path="/dashboard/institute" element={<ProtectedRoute allowedRoles={["institute"]}><InstituteDashboard /></ProtectedRoute>} />
               <Route path="/dashboard/institute/profile" element={<ProtectedRoute allowedRoles={["institute"]}><InstituteProfileEdit /></ProtectedRoute>} />
               <Route path="/dashboard/institute/classes" element={<ProtectedRoute allowedRoles={["institute"]}><InstituteClasses /></ProtectedRoute>} />
+              <Route path="/dashboard/institute/add-class" element={<ProtectedRoute allowedRoles={["institute"]}><InstituteAddClass /></ProtectedRoute>} />
               <Route path="/dashboard/institute/branches" element={<ProtectedRoute allowedRoles={["institute"]}><Branches /></ProtectedRoute>} />
               <Route path="/search-classes" element={<MapSearch />} />
 
