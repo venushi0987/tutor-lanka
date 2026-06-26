@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, GraduationCap, ArrowRight, Shield } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, GraduationCap, ArrowRight, Shield, Building2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { login, clearError } from '../../store/slices/authSlice';
 
@@ -206,9 +206,12 @@ const Login = () => {
             <Link to="/register" className="font-black text-[#1c0da1] hover:text-[#d9cb00] transition-colors ml-1">
               Sign Up
             </Link>
-          </p>
-
-          <div className="mt-4 text-center">
+          </p>              <div className="mt-4 flex items-center justify-center gap-4">
+            <Link to="/institute/login" className="inline-flex items-center gap-1.5 text-xs text-[#1c0da1] hover:text-[#d9cb00] transition-colors font-bold">
+              <Building2 className="w-3 h-3" />
+              Institute Portal
+            </Link>
+            <span className="text-slate-200">|</span>
             <Link to="/admin/login" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 transition-colors">
               <Shield className="w-3 h-3" />
               Admin Portal
