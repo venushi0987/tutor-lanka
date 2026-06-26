@@ -51,7 +51,7 @@ const Register = () => {
     const { confirmPassword, ...payload } = data;
     const result = await dispatch(registerUser(payload));
     if (registerUser.fulfilled.match(result)) {
-      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor' };
+      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', institute: '/dashboard/institute' };
       toast.success(`Welcome to EduConnect, ${result.payload.user.name.split(' ')[0]}! 🎉`);
       navigate(paths[result.payload.user.role] || '/', { replace: true });
     } else {
@@ -62,6 +62,7 @@ const Register = () => {
   const roleOptions = [
     { value: 'student', label: 'Student / Parent', icon: '🎓', desc: 'Find and book tutors' },
     { value: 'tutor', label: 'Tutor / Teacher', icon: '👨‍🏫', desc: 'Offer your classes' },
+    { value: 'institute', label: 'Institute', icon: '🏛️', desc: 'Register your tuition center' },
   ];
 
   const selectedRole = watch('role');
