@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  GraduationCap, Menu, X, ChevronDown, User, LayoutDashboard,
-  Settings, LogOut, Shield, BookOpen, Home, Compass
-} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';import { GraduationCap, Menu, X, ChevronDown, User, LayoutDashboard,
+  Settings, LogOut, Shield, BookOpen, Home, Compass, Building2 } from 'lucide-react';
 import { logout } from '../../store/slices/authSlice';
 import { initSocket } from '../../services/socket';
 import NotificationsDropdown from './NotificationsDropdown';
@@ -158,13 +155,17 @@ const Navbar = () => {
                     className="px-4 py-2 text-sm font-semibold text-[#1c0da1] hover:bg-[#1c0da1]/5 rounded-xl transition-all"
                   >
                     Sign In
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="px-5 py-2 text-sm font-bold bg-[#1c0da1] text-white rounded-xl hover:bg-[#0a044a] transition-all shadow-md shadow-[#1c0da1]/30"
-                  >
-                    Register
-                  </Link>
+                  </Link>          <Link to="/register" className="px-5 py-2 text-sm font-bold bg-[#1c0da1] text-white rounded-xl hover:bg-[#0a044a] transition-all shadow-md shadow-[#1c0da1]/30"
+                    >
+                      Register
+                    </Link>
+                    <Link
+                      to="/institute/login"
+                      className="px-4 py-2 text-sm font-semibold text-[#1c0da1] hover:bg-[#1c0da1]/5 rounded-xl transition-all flex items-center gap-1.5"
+                    >
+                      <Building2 className="w-3.5 h-3.5" />
+                      Institute
+                    </Link>
                 </div>
               ) : (
                 <div className="relative flex items-center" ref={dropdownRef}>
