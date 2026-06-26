@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { protect, authorize } = require('../middleware/auth');
-const { createOrUpdateProfile, getProfile, addLocation, removeLocation, findNearby } = require('../controllers/instituteController');
+const { createOrUpdateProfile, getProfile, addLocation, removeLocation, findNearby, getInstituteClasses, getAnalytics } = require('../controllers/instituteController');
 const upload = require('../middleware/upload');
 
 router.post('/profile', protect, authorize('institute'), upload.single('logo'), createOrUpdateProfile);
