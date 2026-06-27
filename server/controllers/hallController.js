@@ -45,64 +45,127 @@ const getHallById = async (req, res) => {
 // ─── POST /api/halls  — create a hall (hall_owner only) ──────────────────────
 const createHall = async (req, res) => {
   try {
-    if (!req.user) return res.status(401).json({ success: false, message: 'Not authenticated' });
+    console.log('=== Hall Creation Request ===');
+    console.log('User:', req.user?._id, req.user?.role);
+    console.log('Body:', req.body);
+    console.log('File:', req.file?.filename || 'No file');
+
+    if (!req.user) {
+      console.error('No authenticated user');
+      return res.status(401).json({ success: false, message: 'Not authenticated' });
+    }
+    
     const { name, capacity, amenities, address, lat, lng, hourlyRate, location } = req.body;
+    console.log('Parsed fields:', { name, capacity, address, hourlyRate, location });
 
-    if (!name || !capacity || !address || !hourlyRate) {
-      return res.status(400).json({ success: false, message: 'Name, capacity, address, and hourlyRate are required' });
+    // Validate required fields
+    if (!name?.trim()) {
+      console.error('Missing name');
+      return res.status(400).json({ success: false, message: 'Hall name is required' });
+    }
+    if (!address?.trim()) {
+      console.error('Missing address');
+      return res.status(400).json({ success: false, message: 'Address is required' });
+    }
+    if (!capacity) {
+      console.error('Missing capacity');
+      return res.status(400).json({ success: false, message: 'Capacity is required' });
+    }
+    if (hourlyRate === undefined || hourlyRate === null || hourlyRate === '') {
+      console.error('Missing hourlyRate:', hourlyRate);
+      return res.status(400).json({ success: false, message: 'Hourly rate is required' });
     }
 
-    let finalLocation;
+    // Parse and validate location
+    let finalLocation = null;
     if (location) {
-      let locObj = location;
-      if (typeof location === 'string') {
-        try {
-          locObj = JSON.parse(location);
-        } catch (_) {}
-      }
-      if (locObj && locObj.coordinates && locObj.coordinates.length === 2) {
-        finalLocation = locObj;
+      try {
+        const locObj = typeof location === 'string' ? JSON.parse(location) : location;
+        console.log('Parsed location:', locObj);
+        if (locObj.coordinates && Array.isArray(locObj.coordinates) && locObj.coordinates.length === 2) {
+          const [lng, lat] = locObj.coordinates;
+          if (!isNaN(lng) && !isNaN(lat)) {
+            finalLocation = { type: 'Point', coordinates: [Number(lng), Number(lat)] };
+          }
+        }
+      } catch (e) {
+        console.error('Location parse error:', e.message);
       }
     }
-    if (!finalLocation) {
-      let parsedLat = parseFloat(lat);
-      let parsedLng = parseFloat(lng);
+
+    // Fallback to lat/lng parameters
+    if (!finalLocation && lat && lng) {
+      const parsedLat = parseFloat(lat);
+      const parsedLng = parseFloat(lng);
       if (!isNaN(parsedLat) && !isNaN(parsedLng)) {
         finalLocation = { type: 'Point', coordinates: [parsedLng, parsedLat] };
       }
     }
-    if (!finalLocation) {
-      return res.status(400).json({ success: false, message: 'Location coordinates (lat, lng) are required' });
-    }
 
-    let parsedAmenities = amenities || [];
-    if (typeof amenities === 'string') {
-      try {
-        parsedAmenities = JSON.parse(amenities);
-      } catch (_) {
-        parsedAmenities = amenities.split(',').map(s => s.trim()).filter(Boolean);
+    // Default to Colombo if no location provided
+    if (!finalLocation) {
+      console.log('Using default Colombo coordinates');
+      finalLocation = { type: 'Point', coordinates: [79.8612, 6.9271] };
+    }
+    console.log('Final location:', finalLocation);
+
+    // Parse amenities
+    let parsedAmenities = [];
+    if (amenities) {
+      if (typeof amenities === 'string') {
+        try {
+          parsedAmenities = JSON.parse(amenities);
+        } catch (_) {
+          parsedAmenities = amenities.split(',').map(s => s.trim()).filter(Boolean);
+        }
+      } else if (Array.isArray(amenities)) {
+        parsedAmenities = amenities;
       }
     }
+    console.log('Parsed amenities:', parsedAmenities);
 
     const hallData = {
       owner: req.user._id,
-      name,
+      name: name.trim(),
       capacity: parseInt(capacity),
       amenities: parsedAmenities,
-      address,
+      address: address.trim(),
       location: finalLocation,
       hourlyRate: parseFloat(hourlyRate),
       isAvailable: true,
     };
 
+    // Ensure location coordinates are valid numbers
+    if (hallData.location && hallData.location.coordinates) {
+      hallData.location.coordinates = hallData.location.coordinates.map(coord => {
+        const num = parseFloat(coord);
+        if (isNaN(num)) throw new Error('Invalid location coordinates');
+        return num;
+      });
+    }
+
     if (req.file) {
+      console.log('File uploaded:', req.file.path);
       hallData.images = [req.file.path];
     }
 
+    console.log('Final hallData:', JSON.stringify(hallData, null, 2));
     const hall = await ClassHall.create(hallData);
+    console.log('Hall created successfully:', hall._id);
     res.status(201).json({ success: true, hall });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error('=== Hall Creation Error ===');
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    console.error('Error details:', error);
+    
+    // Mongoose validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(e => e.message);
+      return res.status(400).json({ success: false, message: messages.join(', ') });
+    }
+    
+    res.status(500).json({ success: false, message: error.message || 'Failed to create hall' });
   }
 };
 

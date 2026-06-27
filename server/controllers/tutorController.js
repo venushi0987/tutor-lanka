@@ -51,7 +51,7 @@ const updateTutorProfile = async (req, res) => {
   try {
     const {
       bio, qualifications, experience, subjects, languages,
-      whatsapp, socialLinks, location, phone
+      whatsapp, socialLinks, location, phone, name, gender, address, locationCoords
     } = req.body;
 
     let profile = await TutorProfile.findOne({ userId: req.user._id });
@@ -60,6 +60,19 @@ const updateTutorProfile = async (req, res) => {
       profile = await TutorProfile.create({ userId: req.user._id, slug });
     }
 
+    // Update User model fields
+    const userUpdate = {};
+    if (name !== undefined) userUpdate.name = name;
+    if (gender !== undefined) userUpdate.gender = gender;
+    if (address !== undefined) userUpdate.address = address;
+    if (locationCoords !== undefined) userUpdate.locationCoords = locationCoords;
+    if (phone !== undefined) userUpdate.phone = phone;
+
+    if (Object.keys(userUpdate).length > 0) {
+      await User.findByIdAndUpdate(req.user._id, userUpdate, { new: true });
+    }
+
+    // Update TutorProfile fields
     if (bio !== undefined) profile.bio = bio;
     if (qualifications !== undefined) profile.qualifications = qualifications;
     if (experience !== undefined) profile.experience = experience;
@@ -68,10 +81,6 @@ const updateTutorProfile = async (req, res) => {
     if (whatsapp !== undefined) profile.whatsapp = whatsapp;
     if (socialLinks !== undefined) profile.socialLinks = { ...profile.socialLinks, ...socialLinks };
     if (location !== undefined) profile.location = { ...profile.location, ...location };
-
-    if (phone !== undefined) {
-      await User.findByIdAndUpdate(req.user._id, { phone });
-    }
 
     if (req.file) {
       await User.findByIdAndUpdate(req.user._id, { avatar: req.file.path });

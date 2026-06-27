@@ -14,8 +14,6 @@ const userSchema = new mongoose.Schema(
     isVerified: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
     lastSeen: { type: Date, default: Date.now },
-<<<<<<< Updated upstream
-=======
     // New fields
     refreshToken: { type: String, default: null, select: false },
     loginAttempts: { type: Number, default: 0 },
@@ -31,7 +29,6 @@ const userSchema = new mongoose.Schema(
     // Password reset
     passwordResetToken: { type: String, select: false },
     passwordResetExpire: { type: Date, select: false },
->>>>>>> Stashed changes
   },
   { timestamps: true }
 );

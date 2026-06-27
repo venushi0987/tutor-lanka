@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../store/slices/authSlice';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -10,10 +15,35 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login Submitting:', formData);
-    navigate('/dashboard/student'); 
+    
+    if (!formData.email || !formData.password) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+
+    try {
+      const result = await dispatch(login(formData));
+      if (result.payload?.success) {
+        toast.success('Login successful!');
+        // Determine redirect based on role
+        const role = result.payload.user?.role;
+        if (role === 'tutor') {
+          navigate('/dashboard/tutor');
+        } else if (role === 'hall_owner') {
+          navigate('/dashboard/hall');
+        } else if (role === 'admin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/dashboard/student');
+        }
+      } else {
+        toast.error(result.payload || 'Login failed');
+      }
+    } catch (err) {
+      toast.error(error || 'Login failed');
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -111,9 +141,10 @@ const Login = () => {
             {/* Submit Sign In Button */}
             <button 
               type="submit"
-              className="w-full py-4 bg-[#1c0da1] text-white font-bold rounded-2xl hover:bg-[#0a044a] transition-all text-sm shadow-xl shadow-[#1c0da1]/20 mt-2 tracking-wide"
+              disabled={loading}
+              className="w-full py-4 bg-[#1c0da1] text-white font-bold rounded-2xl hover:bg-[#0a044a] disabled:bg-slate-400 disabled:cursor-not-allowed transition-all text-sm shadow-xl shadow-[#1c0da1]/20 mt-2 tracking-wide"
             >
-              Sign in
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 

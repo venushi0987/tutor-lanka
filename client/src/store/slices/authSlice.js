@@ -4,7 +4,8 @@ import api from '../../services/api';
 const user = JSON.parse(localStorage.getItem('educonnect_user'));
 const token = localStorage.getItem('educonnect_token');
 
-export const register = createAsyncThunk('auth/register', async (data, { rejectWithValue }) => {
+// 💡 Named as 'registerUser' to prevent conflicts with React Hook Form's register function
+export const registerUser = createAsyncThunk('auth/registerUser', async (data, { rejectWithValue }) => {
   try {
     const res = await api.post('/auth/register', data);
     localStorage.setItem('educonnect_token', res.data.token);
@@ -35,6 +36,17 @@ export const getMe = createAsyncThunk('auth/getMe', async (_, { rejectWithValue 
   }
 });
 
+export const updateProfile = createAsyncThunk('auth/updateProfile', async (data, { rejectWithValue }) => {
+  try {
+    const res = await api.put('/tutors/profile', data);
+    const updatedUser = res.data.profile?.userId || res.data.user;
+    localStorage.setItem('educonnect_user', JSON.stringify(updatedUser));
+    return { success: true, user: updatedUser };
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Profile update failed');
+  }
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -61,14 +73,17 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => { state.loading = true; state.error = null; })
-      .addCase(register.fulfilled, (state, action) => {
+      // 🔄 Handling updated registerUser action states
+      .addCase(registerUser.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
       })
-      .addCase(register.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      .addCase(registerUser.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      
+      // Login handling
       .addCase(login.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
@@ -77,7 +92,17 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
       })
       .addCase(login.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
-      .addCase(getMe.fulfilled, (state, action) => { state.user = action.payload.user; });
+      
+      // Get current user profile
+      .addCase(getMe.fulfilled, (state, action) => { state.user = action.payload.user; })
+      
+      // Update profile handling
+      .addCase(updateProfile.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(updateProfile.rejected, (state, action) => { state.loading = false; state.error = action.payload; });
   },
 });
 
