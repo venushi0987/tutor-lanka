@@ -3,9 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Search, SlidersHorizontal, MapPin, Filter, BookOpen, Star, Users, Clock, Building2, School
+  Search, SlidersHorizontal, MapPin, Filter, BookOpen, Star, Users, Clock, Building2, School, ExternalLink
 } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { fetchClasses } from '../store/slices/classSlice';
+import api from '../services/api';
+
+// Fix marker icon paths for bundlers
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
+  iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
+  shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href,
+});
 
 const SRI_LANKA_DISTRICTS = [
   'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya',
@@ -35,6 +47,17 @@ const teachingMethods = [
   { value: 'Hybrid', label: 'Hybrid', icon: '🔄' },
 ];
 
+const GRADIENTS = [
+  'from-blue-600 to-blue-800',
+  'from-emerald-600 to-emerald-800',
+  'from-purple-600 to-purple-800',
+  'from-rose-600 to-rose-800',
+  'from-amber-600 to-amber-800',
+  'from-teal-600 to-teal-800',
+  'from-indigo-600 to-indigo-800',
+  'from-pink-600 to-pink-800',
+];
+
 const Explore = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,6 +69,10 @@ const Explore = () => {
     subject: '', grade: '', district: '', method: '', language: '', minFee: '', maxFee: '',
   });
   const [page, setPage] = useState(1);
+
+  // Institutes state
+  const [institutes, setInstitutes] = useState([]);
+  const [instLoading, setInstLoading] = useState(true);
 
   useEffect(() => {
     const params = { page, limit: 12 };
@@ -59,6 +86,21 @@ const Explore = () => {
     if (filters.maxFee) params.maxFee = filters.maxFee;
     dispatch(fetchClasses(params));
   }, [dispatch, page, filters, search]);
+
+  // Fetch all institutes for the map
+  useEffect(() => {
+    const fetchInstitutes = async () => {
+      try {
+        const res = await api.get('/institutes');
+        setInstitutes(res.data.institutes || []);
+      } catch (err) {
+        console.error('Failed to fetch institutes', err);
+      } finally {
+        setInstLoading(false);
+      }
+    };
+    fetchInstitutes();
+  }, []);
 
   const clearFilters = () => {
     setFilters({ subject: '', grade: '', district: '', method: '', language: '', minFee: '', maxFee: '' });
@@ -76,6 +118,24 @@ const Explore = () => {
     }
   };
 
+  // Collect all valid markers from institutes
+  const mapMarkers = [];
+  institutes.forEach((inst) => {
+    if (inst.locations && inst.locations.length > 0) {
+      inst.locations.forEach((loc) => {
+        const lng = loc.coordinates?.coordinates?.[0];
+        const lat = loc.coordinates?.coordinates?.[1];
+        if (lng && lat && (lng !== 0 || lat !== 0)) {
+          mapMarkers.push({ lat, lng, institute: inst, location: loc });
+        }
+      });
+    }
+  });
+
+  const mapCenter = mapMarkers.length > 0
+    ? [mapMarkers[0].lat, mapMarkers[0].lng]
+    : [7.8731, 80.7718]; // Center of Sri Lanka
+
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-12 text-white">
@@ -84,7 +144,7 @@ const Explore = () => {
             <p className="text-[#d9cb00] text-xs font-bold tracking-widest uppercase mb-1">Explore Classes</p>
             <h1 className="text-3xl md:text-4xl font-black">Find Your Perfect Tuition Class</h1>
             <p className="text-slate-300 text-sm mt-2 max-w-2xl">
-              Browse classes from leading institutes like Sarasavi, Gathika, DP Education, Sipwin, and more across Sri Lanka
+              Browse classes from leading institutes across Sri Lanka. Explore institutes on the map below!
             </p>
           </motion.div>
           <div className="mt-6 flex flex-col md:flex-row gap-3">
@@ -244,24 +304,125 @@ const Explore = () => {
           </>
         )}
 
-        <div className="mt-12 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-          <h2 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-[#1c0da1]" /> Browse by Institute
-          </h2>
-          <p className="text-sm text-slate-500 mb-4">Find classes from leading tuition institutes across Sri Lanka</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {['Sarasavi Institute', 'Gathika Education', 'DP Education', 'Sipwin Academy'].map((inst, i) => (
-              <div key={inst}
-                className="p-4 rounded-xl border border-slate-200 hover:border-[#1c0da1] hover:shadow-md transition-all cursor-pointer text-center group"
-                onClick={() => navigate('/search-classes')}>
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${['from-blue-600 to-blue-800', 'from-emerald-600 to-emerald-800', 'from-purple-600 to-purple-800', 'from-rose-600 to-rose-800'][i]} flex items-center justify-center mx-auto mb-2`}>
-                  <School className="w-6 h-6 text-white" />
-                </div>
-                <p className="text-sm font-bold text-slate-700 group-hover:text-[#1c0da1]">{inst}</p>
-                <p className="text-[10px] text-slate-400 mt-0.5">View classes →</p>
-              </div>
-            ))}
+        {/* Institute Map Section */}
+        <div className="mt-12 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="p-6">
+            <h2 className="text-lg font-black text-slate-800 mb-1 flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-[#1c0da1]" /> Institutes on Map
+            </h2>
+            <p className="text-sm text-slate-500 mb-4">
+              {instLoading ? 'Loading institutes...' : `Explore ${institutes.length} institute${institutes.length !== 1 ? 's' : ''} and their ${mapMarkers.length} location${mapMarkers.length !== 1 ? 's' : ''} across Sri Lanka`}
+            </p>
           </div>
+
+          {instLoading ? (
+            <div className="h-96 bg-slate-100 animate-pulse flex items-center justify-center">
+              <Building2 className="w-12 h-12 text-slate-300" />
+            </div>
+          ) : institutes.length === 0 ? (
+            <div className="h-96 bg-slate-50 flex items-center justify-center border-t border-slate-100">
+              <div className="text-center">
+                <School className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <p className="text-sm text-slate-500">No institutes with locations found yet</p>
+                <p className="text-xs text-slate-400 mt-1">Institutes will appear here once they add branch locations</p>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="h-[500px] relative">
+                <MapContainer
+                  center={mapCenter}
+                  zoom={mapMarkers.length > 0 ? 11 : 8}
+                  style={{ height: '100%', width: '100%' }}
+                  scrollWheelZoom={true}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  />
+                  {mapMarkers.map((marker, idx) => (
+                    <Marker key={`${marker.institute._id}-${idx}`} position={[marker.lat, marker.lng]}>
+                      <Popup maxWidth={280} minWidth={220}>
+                        <div className="p-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            {marker.institute.logo ? (
+                              <img src={marker.institute.logo} alt={marker.institute.name} className="w-8 h-8 rounded-lg object-cover" />
+                            ) : (
+                              <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${GRADIENTS[idx % GRADIENTS.length]} flex items-center justify-center`}>
+                                <span className="text-white text-xs font-bold">{marker.institute.name?.[0] || 'I'}</span>
+                              </div>
+                            )}
+                            <div>
+                              <p className="font-bold text-sm text-slate-800 leading-tight">{marker.institute.name}</p>
+                              {marker.institute.isVerified && (
+                                <span className="text-[10px] text-emerald-600 font-bold">✓ Verified</span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="space-y-1 text-xs text-slate-600">
+                            <p className="font-medium text-slate-700">{marker.location.name || marker.location.city || 'Main Branch'}</p>
+                            <p className="text-slate-500">
+                              {[marker.location.address, marker.location.city, marker.location.district].filter(Boolean).join(', ')}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-100">
+                            {marker.institute.rating > 0 && (
+                              <span className="text-[10px] font-bold text-amber-600 flex items-center gap-0.5">
+                                <Star className="w-3 h-3 fill-amber-400 text-amber-400" /> {marker.institute.rating}
+                              </span>
+                            )}
+                            {marker.institute.contact?.phone && (
+                              <span className="text-[10px] text-slate-400">{marker.institute.contact.phone}</span>
+                            )}
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/institute/${marker.institute.slug}`);
+                            }}
+                            className="mt-2 w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[#1c0da1] text-white text-xs font-bold rounded-lg hover:bg-[#0a044a] transition-colors"
+                          >
+                            View Institute <ExternalLink className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </Popup>
+                    </Marker>
+                  ))}
+                </MapContainer>
+              </div>
+
+              {/* Institute list below map */}
+              <div className="p-6 border-t border-slate-100">
+                <h3 className="text-sm font-black text-slate-700 mb-3">All Institutes ({institutes.length})</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {institutes.map((inst, i) => (
+                    <div key={inst._id}
+                      className="p-4 rounded-xl border border-slate-200 hover:border-[#1c0da1] hover:shadow-md transition-all cursor-pointer group"
+                      onClick={() => navigate(`/institute/${inst.slug}`)}>
+                      <div className="flex items-center gap-3">
+                        {inst.logo ? (
+                          <img src={inst.logo} alt={inst.name} className="w-10 h-10 rounded-xl object-cover border border-slate-100" />
+                        ) : (
+                          <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${GRADIENTS[i % GRADIENTS.length]} flex items-center justify-center flex-shrink-0`}>
+                            <span className="text-white text-sm font-bold">{inst.name?.[0] || 'I'}</span>
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-bold text-slate-700 group-hover:text-[#1c0da1] truncate">{inst.name}</p>
+                          <p className="text-[10px] text-slate-400">
+                            {inst.locations?.length || 0} location{(inst.locations?.length || 0) !== 1 ? 's' : ''}
+                            {inst.rating > 0 && ` · ⭐ ${inst.rating}`}
+                            {inst.isVerified && ' · ✓ Verified'}
+                          </p>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-[#1c0da1] transition-colors flex-shrink-0" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
