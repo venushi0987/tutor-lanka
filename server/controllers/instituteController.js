@@ -80,6 +80,18 @@ const removeLocation = async (req, res) => {
   }
 };
 
+// Get all institutes (for map display)
+const getAllInstitutes = async (req, res) => {
+  try {
+    const institutes = await InstituteProfile.find({})
+      .select('name logo slug contact locations rating totalReviews isVerified')
+      .lean();
+    res.json({ success: true, institutes });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Search nearby institutes by coordinates and radius (km)
 const findNearby = async (req, res) => {
   try {
@@ -138,4 +150,4 @@ const getAnalytics = async (req, res) => {
   }
 };
 
-module.exports = { createOrUpdateProfile, getProfile, addLocation, removeLocation, findNearby, getInstituteClasses, getAnalytics };
+module.exports = { createOrUpdateProfile, getProfile, addLocation, removeLocation, findNearby, getInstituteClasses, getAnalytics, getAllInstitutes };
