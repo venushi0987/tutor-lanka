@@ -20,7 +20,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', admin: '/dashboard/admin' };
+      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', admin: '/dashboard/admin', institute: '/dashboard/institute' };
       navigate(from || paths[user.role] || '/', { replace: true });
     }
   }, [isAuthenticated, user, navigate, from]);
@@ -32,7 +32,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     const result = await dispatch(login(data));
     if (login.fulfilled.match(result)) {
-      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', admin: '/dashboard/admin' };
+      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', admin: '/dashboard/admin', institute: '/dashboard/institute' };
       toast.success(`Welcome back, ${result.payload.user.name.split(' ')[0]}! 👋`);
       navigate(from || paths[result.payload.user.role] || '/', { replace: true });
     } else {
