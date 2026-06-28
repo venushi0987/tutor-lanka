@@ -1,8 +1,8 @@
 require('dotenv').config();
 const crypto = require('crypto');
 
-// Disable JWT entirely for now per user request unless explicitly set
-process.env.DISABLE_JWT = process.env.DISABLE_JWT || 'true';
+// Enable JWT by default for authentication to work properly
+process.env.DISABLE_JWT = process.env.DISABLE_JWT || 'false';
 if (process.env.DISABLE_JWT === 'true') {
   console.warn('INFO: JWT disabled (DISABLE_JWT=true). Token generation and verification are turned off.');
 } else {
