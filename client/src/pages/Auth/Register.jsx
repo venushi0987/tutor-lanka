@@ -38,7 +38,7 @@ const Register = () => {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', admin: '/dashboard/admin' };
+      const paths = { student: '/dashboard/student', tutor: '/dashboard/tutor', admin: '/dashboard/admin', institute: '/dashboard/institute' };
       navigate(paths[user.role] || '/', { replace: true });
     }
   }, [isAuthenticated, user, navigate]);
