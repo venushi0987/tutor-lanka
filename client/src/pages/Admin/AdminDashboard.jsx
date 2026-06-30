@@ -28,14 +28,14 @@ const typeColors = {
   student: 'bg-emerald-100 text-emerald-700',
   tutor: 'bg-blue-100 text-blue-700',
   report: 'bg-red-100 text-red-700',
-  class: 'bg-purple-100 text-purple-700',
-  verify: 'bg-[#1c0da1]/10 text-[#1c0da1]',
+  class: 'bg-blue-100 text-blue-700',
+  verify: 'bg-[#1e40af]/10 text-[#1e40af]',
 };
 
 const stats = [
-  { label: 'Total Users', value: '1,284', icon: Users, color: 'from-[#1c0da1] to-[#3d2bc4]', change: '+12%' },
+  { label: 'Total Users', value: '1,284', icon: Users, color: 'from-[#1e40af] to-[#2563eb]', change: '+12%' },
   { label: 'Active Tutors', value: '214', icon: GraduationCap, color: 'from-emerald-500 to-teal-600', change: '+5%' },
-  { label: 'Total Classes', value: '389', icon: BookOpen, color: 'from-purple-500 to-purple-700', change: '+18%' },
+  { label: 'Total Classes', value: '389', icon: BookOpen, color: 'from-blue-500 to-blue-700', change: '+18%' },
   { label: 'Pending Reports', value: '7', icon: Flag, color: 'from-red-500 to-rose-600', change: '-2' },
   { label: 'Pending Verifications', value: '23', icon: UserCheck, color: 'from-orange-500 to-amber-600', change: '+3' },
 ];
@@ -52,7 +52,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-10 text-white">
+      <div className="bg-gradient-to-r from-[#0c1a3d] via-[#1e40af] to-[#2563eb] px-6 py-10 text-white">
         <div className="max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
             <p className="text-[#d9cb00] text-xs font-bold tracking-widest uppercase mb-1">Administrator Panel</p>
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
                 <p className="text-xs text-slate-400 mt-0.5">Students and tutors joining the platform</p>
               </div>
               <div className="flex items-center gap-4 text-xs font-semibold">
-                <span className="flex items-center gap-1.5"><span className="w-3 h-1 bg-[#1c0da1] rounded block" /> Students</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-1 bg-[#1e40af] rounded block" /> Students</span>
                 <span className="flex items-center gap-1.5"><span className="w-3 h-1 bg-emerald-500 rounded block" /> Tutors</span>
               </div>
             </div>
@@ -105,8 +105,8 @@ const AdminDashboard = () => {
               <AreaChart data={registrationData}>
                 <defs>
                   <linearGradient id="students" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1c0da1" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#1c0da1" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#1e40af" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#1e40af" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="tutors" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
@@ -117,7 +117,7 @@ const AdminDashboard = () => {
                 <XAxis dataKey="day" tick={{ fontSize: 11, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
                 <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }} />
-                <Area type="monotone" dataKey="students" stroke="#1c0da1" strokeWidth={2} fill="url(#students)" />
+                <Area type="monotone" dataKey="students" stroke="#1e40af" strokeWidth={2} fill="url(#students)" />
                 <Area type="monotone" dataKey="tutors" stroke="#10b981" strokeWidth={2} fill="url(#tutors)" />
               </AreaChart>
             </ResponsiveContainer>
@@ -129,7 +129,7 @@ const AdminDashboard = () => {
             className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100"
           >
             <div className="flex items-center gap-2 mb-4">
-              <Activity className="w-4 h-4 text-[#1c0da1]" />
+              <Activity className="w-4 h-4 text-[#1e40af]" />
               <h3 className="font-black text-slate-800">Recent Activity</h3>
             </div>
             <div className="space-y-3">
@@ -153,7 +153,7 @@ const AdminDashboard = () => {
           <h3 className="font-black text-slate-800 mb-4">Quick Actions</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { label: 'Manage Users', icon: Users, path: '/admin/users', color: 'from-[#1c0da1] to-[#3d2bc4]' },
+              { label: 'Manage Users', icon: Users, path: '/admin/users', color: 'from-[#1e40af] to-[#2563eb]' },
               { label: 'Verify Tutors', icon: UserCheck, path: '/admin/tutors/verify', color: 'from-emerald-500 to-teal-600' },
               { label: 'View Reports', icon: ShieldAlert, path: '/admin/reports', color: 'from-red-500 to-rose-600' },
             ].map(({ label, icon: Icon, path, color }) => (
