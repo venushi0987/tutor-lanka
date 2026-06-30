@@ -19,7 +19,7 @@ const statusConfig = {
 
 const typeColors = {
   'Class Listing': 'bg-blue-100 text-blue-700',
-  'Tutor Profile': 'bg-blue-100 text-blue-700',
+  'Tutor Profile': 'bg-violet-100 text-violet-700',
   'Review': 'bg-orange-100 text-orange-700',
 };
 
