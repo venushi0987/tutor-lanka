@@ -39,10 +39,10 @@ const ReportsManagement = lazy(() => import('./pages/Admin/ReportsManagement'));
 
 // Placeholder dashboards for pages not yet implemented
 const StudentDashboard = () => (
-  <div className="p-10 text-center"><h1 className="text-2xl font-black text-[#1c0da1]">Student Dashboard</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div>
+  <div className="p-10 text-center"><h1 className="text-2xl font-black text-[#1e40af]">Student Dashboard</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div>
 );
 const HallDashboard = () => (
-  <div className="p-10 text-center"><h1 className="text-2xl font-black text-[#1c0da1]">Hall Owner Dashboard</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div>
+  <div className="p-10 text-center"><h1 className="text-2xl font-black text-[#1e40af]">Hall Owner Dashboard</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div>
 );
 
 const App = () => {
@@ -69,7 +69,7 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/unauthorized" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-red-600">Unauthorized</h1><p className="text-slate-400 text-sm mt-2">You do not have permission to access this page.</p></div></div>} />
-              <Route path="/settings" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-[#1c0da1]">Settings</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div></div>} />
+              <Route path="/settings" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-[#1e40af]">Settings</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div></div>} />
 
               {/* =========================================================
                   🔓 UNPROTECTED DASHBOARDS & PAGES (Open for Testing)
@@ -90,7 +90,7 @@ const App = () => {
               {/* 3. Tutor Area */}
               <Route path="/dashboard/tutor" element={<TutorDashboard />} />
               <Route path="/add-class" element={<AddClass />} />
-              <Route path="/tutor/profile/edit" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-[#1c0da1]">Edit Tutor Profile</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div></div>} />
+              <Route path="/tutor/profile/edit" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-[#1e40af]">Edit Tutor Profile</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div></div>} />
 
               {/* 4. Class Hall / Institute Owner Area */}
               <Route path="/dashboard/hall" element={<HallDashboard />} />
@@ -104,7 +104,7 @@ const App = () => {
               <Route path="/dashboard/institute/classes" element={<ProtectedRoute allowedRoles={["institute"]}><InstituteClasses /></ProtectedRoute>} />
               <Route path="/dashboard/institute/add-class" element={<ProtectedRoute allowedRoles={["institute"]}><InstituteAddClass /></ProtectedRoute>} />
               <Route path="/dashboard/institute/branches" element={<ProtectedRoute allowedRoles={["institute"]}><Branches /></ProtectedRoute>} />
-              <Route path="/edit-class/:id" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-[#1c0da1]">Edit Class</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div></div>} />
+              <Route path="/edit-class/:id" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-[#1e40af]">Edit Class</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div></div>} />
 
               {/* 5. Common User Profile Route */}
               <Route path="/profile" element={<UserProfile />} />
