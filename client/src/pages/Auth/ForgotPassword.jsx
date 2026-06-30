@@ -34,11 +34,11 @@ const ForgotPassword = () => {
         <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/60 p-8 border border-slate-100">
           {/* Logo */}
           <div className="flex items-center gap-2.5 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] rounded-xl flex items-center justify-center shadow-md shadow-[#1c0da1]/30">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#1e40af] to-[#2563eb] rounded-xl flex items-center justify-center shadow-md shadow-[#1e40af]/30">
               <GraduationCap className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="font-black text-[#1c0da1] text-sm block leading-none">EduConnect</span>
+              <span className="font-black text-[#1e40af] text-sm block leading-none">EduConnect</span>
               <span className="text-[#d9cb00] text-[9px] font-bold tracking-widest uppercase">Sri Lanka</span>
             </div>
           </div>
@@ -70,7 +70,7 @@ const ForgotPassword = () => {
                         type="email"
                         placeholder="you@example.com"
                         className={`w-full pl-11 pr-4 py-4 bg-slate-50 rounded-2xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                          errors.email ? 'border-red-300' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
+                          errors.email ? 'border-red-300' : 'border-slate-200 focus:border-[#1e40af] focus:ring-4 focus:ring-[#1e40af]/10'
                         }`}
                       />
                     </div>
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="w-full py-4 bg-[#1c0da1] text-white font-bold rounded-2xl hover:bg-[#0a044a] transition-all shadow-xl shadow-[#1c0da1]/20 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full py-4 bg-[#1e40af] text-white font-bold rounded-2xl hover:bg-[#0c1a3d] transition-all shadow-xl shadow-[#1e40af]/20 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {status === 'loading' ? (
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -113,7 +113,7 @@ const ForgotPassword = () => {
           </AnimatePresence>
 
           <div className="mt-6 pt-6 border-t border-slate-100 text-center">
-            <Link to="/login" className="inline-flex items-center gap-1.5 text-sm text-[#1c0da1] font-bold hover:text-[#0a044a] transition-colors">
+            <Link to="/login" className="inline-flex items-center gap-1.5 text-sm text-[#1e40af] font-bold hover:text-[#0c1a3d] transition-colors">
               <ArrowLeft className="w-4 h-4" />
               Back to Sign In
             </Link>
