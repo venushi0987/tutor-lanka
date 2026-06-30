@@ -108,11 +108,11 @@ const Navbar = () => {
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] rounded-xl flex items-center justify-center shadow-md shadow-[#1c0da1]/30 group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 bg-gradient-to-br from-[#1e40af] to-[#2563eb] rounded-xl flex items-center justify-center shadow-md shadow-[#1e40af]/30 group-hover:scale-105 transition-transform">
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="font-black text-[#1c0da1] text-base tracking-tight">EduConnect</span>
+                <span className="font-black text-[#1e40af] text-base tracking-tight">EduConnect</span>
                 <span className="text-[10px] font-semibold text-[#d9cb00] tracking-widest uppercase -mt-0.5">Sri Lanka</span>
               </div>
             </Link>
@@ -126,7 +126,7 @@ const Navbar = () => {
                     to={href}
                     className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                       location.pathname === href
-                        ? 'bg-[#1c0da1]/10 text-[#1c0da1]'
+                        ? 'bg-[#1e40af]/10 text-[#1e40af]'
                         : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                     }`}
                   >
@@ -152,16 +152,16 @@ const Navbar = () => {
                 <div className="hidden md:flex items-center gap-2">
                   <Link
                     to="/login"
-                    className="px-4 py-2 text-sm font-semibold text-[#1c0da1] hover:bg-[#1c0da1]/5 rounded-xl transition-all"
+                    className="px-4 py-2 text-sm font-semibold text-[#1e40af] hover:bg-[#1e40af]/5 rounded-xl transition-all"
                   >
                     Sign In
-                  </Link>          <Link to="/register" className="px-5 py-2 text-sm font-bold bg-[#1c0da1] text-white rounded-xl hover:bg-[#0a044a] transition-all shadow-md shadow-[#1c0da1]/30"
+                  </Link>          <Link to="/register" className="px-5 py-2 text-sm font-bold bg-[#1e40af] text-white rounded-xl hover:bg-[#0c1a3d] transition-all shadow-md shadow-[#1e40af]/30"
                     >
                       Register
                     </Link>
                     <Link
                       to="/institute/login"
-                      className="px-4 py-2 text-sm font-semibold text-[#1c0da1] hover:bg-[#1c0da1]/5 rounded-xl transition-all flex items-center gap-1.5"
+                      className="px-4 py-2 text-sm font-semibold text-[#1e40af] hover:bg-[#1e40af]/5 rounded-xl transition-all flex items-center gap-1.5"
                     >
                       <Building2 className="w-3.5 h-3.5" />
                       Institute
@@ -190,7 +190,7 @@ const Navbar = () => {
                     aria-expanded={dropdownOpen}
                     className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-xl hover:bg-slate-100 transition-all group focus:outline-none focus:ring-2 focus:ring-primary-400"
                   >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] flex items-center justify-center text-white text-xs font-bold shadow-md">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1e40af] to-[#2563eb] flex items-center justify-center text-white text-xs font-bold shadow-md">
                       {user?.avatar ? (
                         <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
                       ) : (
@@ -215,7 +215,7 @@ const Navbar = () => {
                         transition={{ duration: 0.15, ease: 'easeOut' }}
                         className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden z-50"
                       >
-                        <div className="px-4 py-3 bg-gradient-to-br from-[#1c0da1]/5 to-transparent border-b border-slate-100">
+                        <div className="px-4 py-3 bg-gradient-to-br from-[#1e40af]/5 to-transparent border-b border-slate-100">
                           <p className="text-sm font-bold text-slate-900">{user?.name}</p>
                           <p className="text-xs text-slate-500 truncate">{user?.email}</p>
                         </div>
@@ -273,7 +273,7 @@ const Navbar = () => {
                   <Link
                     key={label}
                     to={href}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-[#1c0da1]/5 hover:text-[#1c0da1] transition-all"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-[#1e40af]/5 hover:text-[#1e40af] transition-all"
                     onClick={() => setMobileOpen(false)}
                   >
                     <Icon className="w-4 h-4" /> {label}
@@ -282,7 +282,7 @@ const Navbar = () => {
                   <button
                     key={label}
                     onClick={action}
-                    className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-[#1c0da1]/5 hover:text-[#1c0da1] transition-all"
+                    className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-[#1e40af]/5 hover:text-[#1e40af] transition-all"
                   >
                     <Icon className="w-4 h-4" /> {label}
                   </button>
@@ -292,17 +292,17 @@ const Navbar = () => {
               <div className="border-t border-slate-100 pt-3 mt-3 space-y-1">
                 {!isAuthenticated ? (
                   <>
-                    <Link to="/login" className="block px-4 py-3 rounded-xl text-sm font-semibold text-[#1c0da1] hover:bg-[#1c0da1]/5 transition-all" onClick={() => setMobileOpen(false)}>
+                    <Link to="/login" className="block px-4 py-3 rounded-xl text-sm font-semibold text-[#1e40af] hover:bg-[#1e40af]/5 transition-all" onClick={() => setMobileOpen(false)}>
                       Sign In
                     </Link>
-                    <Link to="/register" className="block px-4 py-3 rounded-xl text-sm font-bold bg-[#1c0da1] text-white hover:bg-[#0a044a] transition-all text-center" onClick={() => setMobileOpen(false)}>
+                    <Link to="/register" className="block px-4 py-3 rounded-xl text-sm font-bold bg-[#1e40af] text-white hover:bg-[#0c1a3d] transition-all text-center" onClick={() => setMobileOpen(false)}>
                       Register
                     </Link>
                   </>
                 ) : (
                   <>
                     <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50">
-                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] flex items-center justify-center text-white text-xs font-bold">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1e40af] to-[#2563eb] flex items-center justify-center text-white text-xs font-bold">
                         {getInitials(user?.name)}
                       </div>
                       <div>
@@ -336,7 +336,7 @@ const Navbar = () => {
 const DropdownItem = ({ icon: Icon, label, onClick }) => (
   <button
     onClick={onClick}
-    className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#1c0da1] transition-colors"
+    className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#1e40af] transition-colors"
   >
     <Icon className="w-4 h-4" />
     {label}
