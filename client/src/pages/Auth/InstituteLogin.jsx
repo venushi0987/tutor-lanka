@@ -17,7 +17,7 @@ const instituteFeatures = [
 const SAMPLE_INSTITUTES = [
   { name: 'Sarasavi Institute', subjects: 'Science & Maths', color: 'from-blue-600 to-blue-800' },
   { name: 'Gathika Education', subjects: 'All Subjects', color: 'from-emerald-600 to-emerald-800' },
-  { name: 'DP Education', subjects: 'ICT & Business', color: 'from-purple-600 to-purple-800' },
+  { name: 'DP Education', subjects: 'ICT & Business', color: 'from-indigo-600 to-indigo-800' },
   { name: 'Sipwin Academy', subjects: 'English & Languages', color: 'from-rose-600 to-rose-800' },
 ];
 
@@ -59,7 +59,7 @@ const InstituteLogin = () => {
   return (
     <div className="min-h-screen w-full flex bg-slate-50 overflow-hidden">
       {/* LEFT PANEL - Institute Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#1c0da1] via-[#2a1ab5] to-[#0a044a] relative p-12 items-center overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#1e40af] via-[#2563eb] to-[#0c1a3d] relative p-12 items-center overflow-hidden">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full" />
         <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-white/10 rounded-full" />
         <div className="absolute top-1/3 right-12 w-64 h-64 bg-[#d9cb00]/10 rounded-full blur-3xl" />
@@ -129,7 +129,7 @@ const InstituteLogin = () => {
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1.5 h-6 bg-[#d9cb00] rounded-full" />
-              <span className="text-xs font-bold text-[#1c0da1] uppercase tracking-widest">Institute Portal</span>
+              <span className="text-xs font-bold text-[#1e40af] uppercase tracking-widest">Institute Portal</span>
             </div>
             <h2 className="text-3xl font-extrabold text-slate-800 tracking-tight">Institute Sign In</h2>
             <p className="text-sm text-slate-500 mt-1">Access your institute dashboard</p>
@@ -159,7 +159,7 @@ const InstituteLogin = () => {
                   type="email"
                   placeholder="institute@example.com"
                   className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 rounded-xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                    errors.email ? 'border-red-300' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
+                    errors.email ? 'border-red-300' : 'border-slate-200 focus:border-[#1e40af] focus:ring-4 focus:ring-[#1e40af]/10'
                   }`}
                 />
               </div>
@@ -175,13 +175,13 @@ const InstituteLogin = () => {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   className={`w-full pl-11 pr-12 py-3.5 bg-slate-50 rounded-xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                    errors.password ? 'border-red-300' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
+                    errors.password ? 'border-red-300' : 'border-slate-200 focus:border-[#1e40af] focus:ring-4 focus:ring-[#1e40af]/10'
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 text-slate-400 hover:text-[#1c0da1] transition-colors"
+                  className="absolute right-4 text-slate-400 hover:text-[#1e40af] transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -190,7 +190,7 @@ const InstituteLogin = () => {
             </div>
 
             <div className="flex justify-between items-center">
-              <Link to="/forgot-password" className="text-xs font-bold text-[#1c0da1] hover:text-[#d9cb00] transition-colors">
+              <Link to="/forgot-password" className="text-xs font-bold text-[#1e40af] hover:text-[#d9cb00] transition-colors">
                 Forgot Password?
               </Link>
             </div>
@@ -198,7 +198,7 @@ const InstituteLogin = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-[#1c0da1] to-[#2a1ab5] text-white font-bold rounded-2xl hover:from-[#0a044a] hover:to-[#1c0da1] transition-all shadow-xl shadow-[#1c0da1]/20 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-gradient-to-r from-[#1e40af] to-[#2563eb] text-white font-bold rounded-2xl hover:from-[#0c1a3d] hover:to-[#1e40af] transition-all shadow-xl shadow-[#1e40af]/20 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -217,7 +217,7 @@ const InstituteLogin = () => {
 
             <Link
               to="/register"
-              className="block w-full py-3.5 bg-white text-[#1c0da1] font-bold rounded-2xl border-2 border-[#1c0da1]/20 hover:bg-[#1c0da1]/5 hover:border-[#1c0da1] transition-all text-sm text-center"
+              className="block w-full py-3.5 bg-white text-[#1e40af] font-bold rounded-2xl border-2 border-[#1e40af]/20 hover:bg-[#1e40af]/5 hover:border-[#1e40af] transition-all text-sm text-center"
             >
               Register Your Institute
             </Link>
