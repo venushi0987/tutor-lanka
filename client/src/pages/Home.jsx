@@ -62,7 +62,7 @@ const Home = () => {
       {/* ------------------ 🔍 2. EXPLORE SECTION ------------------ */}
       <section id="explore-section" ref={exploreRef} className="py-24 px-6 max-w-7xl mx-auto border-b border-slate-200">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-[#1c0da1]">Explore Tutors</h2>
+          <h2 className="text-4xl font-extrabold text-[#1e40af]">Explore Tutors</h2>
           <p className="text-slate-500 mt-2">All subjects covered from Grade 1 up to Advanced Level</p>
         </div>
         
@@ -89,7 +89,7 @@ const Home = () => {
       <section id="about-section" ref={aboutRef} className="py-24 px-6 max-w-7xl mx-auto border-b border-slate-200 bg-white rounded-3xl my-12 shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-4xl font-extrabold text-[#1c0da1]">About Tutor-Lanka</h2>
+            <h2 className="text-4xl font-extrabold text-[#1e40af]">About Tutor-Lanka</h2>
             <p className="text-slate-600 mt-4 leading-relaxed">
               Tutor-Lanka is Sri Lanka's premium educational network matching enthusiastic students with verified expert educators. We make finding individual home-visit tutors or online revision classes incredibly simple, transparent, and tailored to your exact learning requirements.
             </p>
@@ -103,7 +103,7 @@ const Home = () => {
       {/* ------------------ ⭐ 4. REVIEWS SECTION ------------------ */}
       <section id="reviews-section" ref={reviewsRef} className="py-24 px-6 max-w-7xl mx-auto pb-32">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-[#1c0da1]">What Students Say</h2>
+          <h2 className="text-4xl font-extrabold text-[#1e40af]">What Students Say</h2>
           <p className="text-slate-500 mt-2">Building trust with thousands of learners and parents islandwide</p>
         </div>
         
