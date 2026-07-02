@@ -40,7 +40,7 @@ const ClassDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-[#1c0da1] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#1e40af] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -52,7 +52,7 @@ const ClassDetail = () => {
           <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-3" />
           <h2 className="text-xl font-black text-slate-700">Class not found</h2>
           <p className="text-sm text-slate-400 mt-1">{error || 'The class you are looking for does not exist.'}</p>
-          <button onClick={() => navigate('/explore')} className="mt-4 px-4 py-2 bg-[#1c0da1] text-white rounded-xl text-sm font-bold">Browse Classes</button>
+          <button onClick={() => navigate('/explore')} className="mt-4 px-4 py-2 bg-[#1e40af] text-white rounded-xl text-sm font-bold">Browse Classes</button>
         </div>
       </div>
     );
@@ -67,7 +67,7 @@ const ClassDetail = () => {
     <div className="min-h-screen bg-slate-50">
       <div className="bg-white border-b border-slate-100 px-6 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-[#1c0da1] transition-colors">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-[#1e40af] transition-colors">
             <ChevronLeft className="w-4 h-4" /> Back
           </button>
           <div className="flex items-center gap-2">
@@ -88,7 +88,7 @@ const ClassDetail = () => {
 
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
               {inst?.name && (
-                <Link to={`/institute/${inst.slug || inst._id}`} className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1c0da1] hover:underline mb-3">
+                <Link to={`/institute/${inst.slug || inst._id}`} className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1e40af] hover:underline mb-3">
                   <Building2 className="w-3 h-3" /> {inst.name}
                 </Link>
               )}
@@ -96,19 +96,19 @@ const ClassDetail = () => {
                 <div>
                   <h1 className="text-2xl md:text-3xl font-black text-slate-900">{cls.title}</h1>
                   <div className="flex flex-wrap items-center gap-2 mt-2">
-                    <span className="px-3 py-1 rounded-full bg-[#1c0da1]/10 text-[#1c0da1] text-xs font-bold">{cls.subject}</span>
+                    <span className="px-3 py-1 rounded-full bg-[#1e40af]/10 text-[#1e40af] text-xs font-bold">{cls.subject}</span>
                     <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">{cls.grade}</span>
                     <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold">{cls.language}</span>
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                       cls.teachingMethod === 'Online' ? 'bg-blue-50 text-blue-700' :
-                      cls.teachingMethod === 'Physical' ? 'bg-amber-50 text-amber-700' : 'bg-purple-50 text-purple-700'
+                      cls.teachingMethod === 'Physical' ? 'bg-amber-50 text-amber-700' : 'bg-violet-50 text-violet-700'
                     }`}>
                       {cls.teachingMethod === 'Online' ? '🌐' : cls.teachingMethod === 'Physical' ? '🏫' : '🔄'} {cls.teachingMethod}
                     </span>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-black text-[#1c0da1]">Rs {cls.fee?.toLocaleString()}</p>
+                  <p className="text-2xl font-black text-[#1e40af]">Rs {cls.fee?.toLocaleString()}</p>
                   <p className="text-xs text-slate-400 font-medium">/{cls.feeType === 'free' ? 'free' : 'per month'}</p>
                 </div>
               </div>
@@ -131,13 +131,13 @@ const ClassDetail = () => {
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <h2 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2"><Calendar className="w-5 h-5 text-[#1c0da1]" /> Class Schedule</h2>
+              <h2 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2"><Calendar className="w-5 h-5 text-[#1e40af]" /> Class Schedule</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {schedule.days?.length > 0 && (
                   <div>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Days</p>
                     <div className="flex flex-wrap gap-1.5">
-                      {schedule.days.map(day => <span key={day} className="px-3 py-1.5 bg-[#1c0da1]/5 rounded-lg text-xs font-bold text-[#1c0da1]">{day.slice(0, 3)}</span>)}
+                      {schedule.days.map(day => <span key={day} className="px-3 py-1.5 bg-[#1e40af]/5 rounded-lg text-xs font-bold text-[#1e40af]">{day.slice(0, 3)}</span>)}
                     </div>
                   </div>
                 )}
@@ -177,12 +177,12 @@ const ClassDetail = () => {
           <div className="space-y-6">
             {inst && (
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                <h3 className="text-sm font-black text-slate-800 mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-[#1c0da1]" /> Institute</h3>
+                <h3 className="text-sm font-black text-slate-800 mb-3 flex items-center gap-2"><Building2 className="w-4 h-4 text-[#1e40af]" /> Institute</h3>
                 <div className="flex items-center gap-3 mb-3">
                   {inst.logo ? (
                     <img src={inst.logo} alt={inst.name} className="w-12 h-12 rounded-xl object-cover" />
                   ) : (
-                    <div className="w-12 h-12 bg-[#1c0da1]/10 rounded-xl flex items-center justify-center"><School className="w-6 h-6 text-[#1c0da1]" /></div>
+                    <div className="w-12 h-12 bg-[#1e40af]/10 rounded-xl flex items-center justify-center"><School className="w-6 h-6 text-[#1e40af]" /></div>
                   )}
                   <div>
                     <p className="font-bold text-slate-800">{inst.name}</p>
@@ -196,14 +196,14 @@ const ClassDetail = () => {
                     {inst.contact.website && <p className="text-xs text-slate-500 flex items-center gap-1.5"><Globe className="w-3 h-3" /> {inst.contact.website}</p>}
                   </div>
                 )}
-                {inst.slug && <Link to={`/institute/${inst.slug}`} className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[#1c0da1] hover:underline">View Institute Profile →</Link>}
+                {inst.slug && <Link to={`/institute/${inst.slug}`} className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[#1e40af] hover:underline">View Institute Profile →</Link>}
               </div>
             )}
 
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 sticky top-24">
               <h3 className="text-lg font-black text-slate-800 mb-1">Enroll Now</h3>
-              <p className="text-3xl font-black text-[#1c0da1] mb-4">Rs {cls.fee?.toLocaleString()}<span className="text-sm text-slate-400 font-medium">/{cls.feeType === 'free' ? 'free' : 'mo'}</span></p>
-              <button className="w-full py-3.5 bg-[#1c0da1] text-white font-bold rounded-xl hover:bg-[#0a044a] transition-all shadow-lg shadow-[#1c0da1]/20 mb-2">Join This Class</button>
+              <p className="text-3xl font-black text-[#1e40af] mb-4">Rs {cls.fee?.toLocaleString()}<span className="text-sm text-slate-400 font-medium">/{cls.feeType === 'free' ? 'free' : 'mo'}</span></p>
+              <button className="w-full py-3.5 bg-[#1e40af] text-white font-bold rounded-xl hover:bg-[#0c1a3d] transition-all shadow-lg shadow-[#1e40af]/20 mb-2">Join This Class</button>
               <button className="w-full py-3 bg-white border-2 border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-all text-sm flex items-center justify-center gap-2"><Heart className="w-4 h-4" /> Save to Bookmarks</button>
               <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-400">
                 <p>✓ Secure enrollment process</p>
