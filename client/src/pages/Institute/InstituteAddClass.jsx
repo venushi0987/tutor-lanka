@@ -131,7 +131,7 @@ const InstituteAddClass = () => {
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-1.5 h-6 bg-[#d9cb00] rounded-full" />
-            <span className="text-xs font-bold text-[#1c0da1] uppercase tracking-widest">Institute Portal</span>
+            <span className="text-xs font-bold text-[#1e40af] uppercase tracking-widest">Institute Portal</span>
           </div>
           <h1 className="text-3xl font-black text-slate-900">Add New Class</h1>
           <p className="text-sm text-slate-500 mt-1">Fill in all details to publish a new tuition class</p>
@@ -141,7 +141,7 @@ const InstituteAddClass = () => {
           {/* Basic Info */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
             <div className="flex items-center gap-2 mb-4">
-              <BookOpen className="w-5 h-5 text-[#1c0da1]" />
+              <BookOpen className="w-5 h-5 text-[#1e40af]" />
               <h2 className="text-lg font-black text-slate-800">Basic Information</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -150,12 +150,12 @@ const InstituteAddClass = () => {
                 <input type="text" required value={form.title}
                   onChange={(e) => updateField('title', e.target.value)}
                   placeholder="e.g., 2026 A/L Combined Maths Revision"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm transition-all" />
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm transition-all" />
               </div>
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">Subject</label>
                 <select required value={form.subject} onChange={(e) => updateField('subject', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm">
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm">
                   <option value="">Select subject</option>
                   {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
@@ -163,7 +163,7 @@ const InstituteAddClass = () => {
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">Grade / Year</label>
                 <select required value={form.grade} onChange={(e) => updateField('grade', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm">
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm">
                   <option value="">Select grade</option>
                   {GRADES.map(g => <option key={g} value={g}>{g}</option>)}
                 </select>
@@ -171,7 +171,7 @@ const InstituteAddClass = () => {
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">Exam Type</label>
                 <select value={form.examType} onChange={(e) => updateField('examType', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm">
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm">
                   <option value="None">General</option>
                   <option value="Scholarship">Scholarship</option>
                   <option value="O/L">O/L</option>
@@ -183,7 +183,7 @@ const InstituteAddClass = () => {
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">Medium / Language</label>
                 <select value={form.language} onChange={(e) => updateField('language', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm">
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm">
                   <option value="Sinhala">Sinhala</option>
                   <option value="English">English</option>
                   <option value="Tamil">Tamil</option>
@@ -193,7 +193,7 @@ const InstituteAddClass = () => {
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">Teaching Method</label>
                 <select value={form.teachingMethod} onChange={(e) => updateField('teachingMethod', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm">
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm">
                   <option value="Physical">🏫 Physical Classroom</option>
                   <option value="Online">🌐 Online</option>
                   <option value="Hybrid">🔄 Hybrid (Both)</option>
@@ -214,14 +214,14 @@ const InstituteAddClass = () => {
                 <input type="text" value={form.teacherName}
                   onChange={(e) => updateField('teacherName', e.target.value)}
                   placeholder="e.g., Prof. Saman Perera"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
               </div>
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">Teacher Contact</label>
                 <input type="text" value={form.teacherPhone}
                   onChange={(e) => updateField('teacherPhone', e.target.value)}
                   placeholder="e.g., 0771234567"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
               </div>
             </div>
           </div>
@@ -238,12 +238,12 @@ const InstituteAddClass = () => {
                 <input type="number" required min="0" value={form.fee}
                   onChange={(e) => updateField('fee', e.target.value)}
                   placeholder="e.g., 3000"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
               </div>
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">Fee Type</label>
                 <select value={form.feeType} onChange={(e) => updateField('feeType', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm">
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm">
                   <option value="per_month">Per Month</option>
                   <option value="per_class">Per Class</option>
                   <option value="free">Free</option>
@@ -254,7 +254,7 @@ const InstituteAddClass = () => {
                 <input type="number" min="0" value={form.maxStudents}
                   onChange={(e) => updateField('maxStudents', e.target.value)}
                   placeholder="e.g., 50"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
               </div>
             </div>
           </div>
@@ -262,7 +262,7 @@ const InstituteAddClass = () => {
           {/* Schedule */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
             <div className="flex items-center gap-2 mb-4">
-              <Calendar className="w-5 h-5 text-purple-600" />
+              <Calendar className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg font-black text-slate-800">Class Schedule</h2>
             </div>
             <div className="space-y-4">
@@ -273,8 +273,8 @@ const InstituteAddClass = () => {
                     <button key={day} type="button" onClick={() => toggleDay(day)}
                       className={`px-4 py-2 rounded-xl text-xs font-bold border-2 transition-all ${
                         selectedDays.includes(day)
-                          ? 'bg-[#1c0da1] text-white border-[#1c0da1]'
-                          : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-[#1c0da1]'
+                          ? 'bg-[#1e40af] text-white border-[#1e40af]'
+                          : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-[#1e40af]'
                       }`}>
                       {day.slice(0, 3)}
                     </button>
@@ -288,7 +288,7 @@ const InstituteAddClass = () => {
                   </label>
                   <input type="time" value={form.schedule.startTime}
                     onChange={(e) => setForm(prev => ({ ...prev, schedule: { ...prev.schedule, startTime: e.target.value } }))}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
                 </div>
                 <div>
                   <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">
@@ -296,7 +296,7 @@ const InstituteAddClass = () => {
                   </label>
                   <input type="time" value={form.schedule.endTime}
                     onChange={(e) => setForm(prev => ({ ...prev, schedule: { ...prev.schedule, endTime: e.target.value } }))}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
                 </div>
               </div>
             </div>
@@ -312,7 +312,7 @@ const InstituteAddClass = () => {
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">District</label>
                 <select value={form.district} onChange={(e) => updateField('district', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm">
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm">
                   <option value="">Select district</option>
                   {SRI_LANKA_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
                 </select>
@@ -322,14 +322,14 @@ const InstituteAddClass = () => {
                 <input type="text" value={form.city}
                   onChange={(e) => updateField('city', e.target.value)}
                   placeholder="e.g., Nugegoda"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
               </div>
               <div className="md:col-span-2">
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">Address</label>
                 <input type="text" value={form.address}
                   onChange={(e) => updateField('address', e.target.value)}
                   placeholder="e.g., No. 123, Galle Road, Nugegoda"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
               </div>
             </div>
             <div>
@@ -346,13 +346,13 @@ const InstituteAddClass = () => {
                 <textarea rows="5" value={form.description}
                   onChange={(e) => updateField('description', e.target.value)}
                   placeholder="Describe the class content, what students will learn, prerequisites, materials provided..."
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm resize-none" required />
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm resize-none" required />
               </div>
               <div>
                 <label className="text-xs font-bold text-slate-500 block mb-1.5 uppercase tracking-wider">
                   <Upload className="w-3 h-3 inline mr-1" /> Class Banner Image
                 </label>
-                <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center hover:border-[#1c0da1] transition-colors cursor-pointer"
+                <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center hover:border-[#1e40af] transition-colors cursor-pointer"
                   onClick={() => document.getElementById('banner-upload').click()}>
                   {bannerPreview ? (
                     <img src={bannerPreview} alt="Preview" className="max-h-32 mx-auto rounded-lg object-cover" />
@@ -370,7 +370,7 @@ const InstituteAddClass = () => {
                   <input type="text" value={form.tags}
                     onChange={(e) => updateField('tags', e.target.value)}
                     placeholder="e.g., revision, weekend, theory"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1c0da1] text-sm" />
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#1e40af] text-sm" />
                 </div>
               </div>
             </div>
@@ -383,7 +383,7 @@ const InstituteAddClass = () => {
               Cancel
             </button>
             <button type="submit" disabled={loading}
-              className="px-8 py-3 bg-[#1c0da1] text-white rounded-xl text-sm font-bold hover:bg-[#0a044a] transition-all shadow-lg shadow-[#1c0da1]/20 flex items-center gap-2 disabled:opacity-60">
+              className="px-8 py-3 bg-[#1e40af] text-white rounded-xl text-sm font-bold hover:bg-[#0c1a3d] transition-all shadow-lg shadow-[#1e40af]/20 flex items-center gap-2 disabled:opacity-60">
               {loading ? (
                 <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Publishing...</>
               ) : (
