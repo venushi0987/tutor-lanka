@@ -44,12 +44,12 @@ const Login = () => {
     <div className="h-[calc(100vh-64px)] w-full flex bg-white overflow-hidden">
 
       {/* LEFT SIDE */}
-      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#1c0da1] via-[#2a1ab5] to-[#0a044a] relative p-16 items-center overflow-hidden h-full">
+      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#1e40af] via-[#2563eb] to-[#0c1a3d] relative p-16 items-center overflow-hidden h-full">
         {/* Decorative circles */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full" />
         <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-white/10 rounded-full" />
         <div className="absolute top-1/2 right-8 w-48 h-48 bg-[#d9cb00]/10 rounded-full blur-2xl" />
-        <div className="absolute bottom-32 right-24 w-64 h-64 bg-[#1c0da1] rounded-full filter blur-3xl opacity-50" />
+        <div className="absolute bottom-32 right-24 w-64 h-64 bg-[#1e40af] rounded-full filter blur-3xl opacity-50" />
         <div className="absolute top-24 left-32 w-32 h-32 bg-white/5 rounded-full blur-xl" />
 
         <div className="relative z-10 text-white space-y-6 max-w-lg">
@@ -85,7 +85,7 @@ const Login = () => {
 
       {/* RIGHT SIDE */}
       <div className="w-full md:w-1/2 flex flex-col justify-center p-8 sm:p-12 md:p-16 relative bg-white h-full overflow-y-auto">
-        <div className="absolute bottom-0 right-0 w-48 h-48 bg-gradient-to-tl from-[#1c0da1]/10 to-transparent rounded-tl-full pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-48 h-48 bg-gradient-to-tl from-[#1e40af]/10 to-transparent rounded-tl-full pointer-events-none" />
         <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#d9cb00]/10 to-transparent rounded-br-full pointer-events-none" />
 
         <motion.div
@@ -97,7 +97,7 @@ const Login = () => {
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1.5 h-6 bg-[#d9cb00] rounded-full" />
-              <span className="text-xs font-bold text-[#1c0da1] uppercase tracking-widest">Welcome back</span>
+              <span className="text-xs font-bold text-[#1e40af] uppercase tracking-widest">Welcome back</span>
             </div>
             <h2 className="text-4xl font-extrabold text-slate-800 tracking-tight">Sign In</h2>
             <p className="text-sm text-slate-500 mt-1">Continue your learning journey</p>
@@ -147,7 +147,7 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 text-slate-400 hover:text-[#1c0da1] transition-colors"
+                  className="absolute right-4 text-slate-400 hover:text-[#1e40af] transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -158,10 +158,10 @@ const Login = () => {
             {/* Remember + Forgot */}
             <div className="flex justify-between items-center">
               <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input type="checkbox" className="w-4 h-4 accent-[#1c0da1] rounded" />
+                <input type="checkbox" className="w-4 h-4 accent-[#1e40af] rounded" />
                 <span className="text-xs font-semibold text-slate-500">Remember me</span>
               </label>
-              <Link to="/forgot-password" className="text-xs font-bold text-[#1c0da1] hover:text-[#d9cb00] transition-colors">
+              <Link to="/forgot-password" className="text-xs font-bold text-[#1e40af] hover:text-[#d9cb00] transition-colors">
                 Forgot Password?
               </Link>
             </div>
@@ -170,7 +170,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-[#1c0da1] text-white font-bold rounded-2xl hover:bg-[#0a044a] transition-all shadow-xl shadow-[#1c0da1]/20 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-[#1e40af] text-white font-bold rounded-2xl hover:bg-[#0c1a3d] transition-all shadow-xl shadow-[#1e40af]/20 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -203,11 +203,11 @@ const Login = () => {
 
           <p className="text-center text-xs text-slate-400 mt-6 font-semibold">
             Don't have an account?{' '}
-            <Link to="/register" className="font-black text-[#1c0da1] hover:text-[#d9cb00] transition-colors ml-1">
+            <Link to="/register" className="font-black text-[#1e40af] hover:text-[#d9cb00] transition-colors ml-1">
               Sign Up
             </Link>
           </p>              <div className="mt-4 flex items-center justify-center gap-4">
-            <Link to="/institute/login" className="inline-flex items-center gap-1.5 text-xs text-[#1c0da1] hover:text-[#d9cb00] transition-colors font-bold">
+            <Link to="/institute/login" className="inline-flex items-center gap-1.5 text-xs text-[#1e40af] hover:text-[#d9cb00] transition-colors font-bold">
               <Building2 className="w-3 h-3" />
               Institute Portal
             </Link>
