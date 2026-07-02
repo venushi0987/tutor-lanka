@@ -62,7 +62,7 @@ const Branches = () => {
             <LocationPicker initial={[6.9,79.86]} onChange={(lnglat)=>setCoords(lnglat)} />
           </div>
           <div className="mt-3 flex justify-end">
-            <button onClick={handleAdd} className="px-4 py-2 bg-[#1c0da1] text-white rounded-xl font-bold">Add Branch</button>
+            <button onClick={handleAdd} className="px-4 py-2 bg-[#1e40af] text-white rounded-xl font-bold">Add Branch</button>
           </div>
         </div>
 
