@@ -70,7 +70,7 @@ const Register = () => {
   return (
     <div className="min-h-[calc(100vh-64px)] w-full flex bg-white overflow-hidden">
       {/* LEFT PANEL */}
-      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#1c0da1] via-[#2a1ab5] to-[#0a044a] relative p-14 items-center overflow-hidden">
+      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#1e40af] via-[#2563eb] to-[#0c1a3d] relative p-14 items-center overflow-hidden">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full" />
         <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-white/10 rounded-full" />
         <div className="absolute top-1/2 right-8 w-48 h-48 bg-[#d9cb00]/10 rounded-full blur-2xl" />
@@ -119,7 +119,7 @@ const Register = () => {
           <div className="mb-7">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1.5 h-6 bg-[#d9cb00] rounded-full" />
-              <span className="text-xs font-bold text-[#1c0da1] uppercase tracking-widest">Create Account</span>
+              <span className="text-xs font-bold text-[#1e40af] uppercase tracking-widest">Create Account</span>
             </div>
             <h2 className="text-4xl font-extrabold text-slate-800 tracking-tight">Sign Up</h2>
             <p className="text-sm text-slate-500 mt-1">Start your learning journey today</p>
@@ -146,7 +146,7 @@ const Register = () => {
                     <input type="radio" value={value} {...register('role')} className="sr-only" />
                     <div className={`p-3 rounded-xl border-2 transition-all text-center ${
                       selectedRole === value
-                        ? 'border-[#1c0da1] bg-[#1c0da1]/5'
+                        ? 'border-[#1e40af] bg-[#1e40af]/5'
                         : 'border-slate-200 hover:border-slate-300'
                     }`}>
                       <div className="text-2xl mb-1">{icon}</div>
@@ -171,7 +171,7 @@ const Register = () => {
                   type="text"
                   placeholder="Kasun Perera"
                   className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 rounded-xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                    errors.name ? 'border-red-300' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
+                    errors.name ? 'border-red-300' : 'border-slate-200 focus:border-[#1e40af] focus:ring-4 focus:ring-[#1e40af]/10'
                   }`}
                 />
               </div>
@@ -191,7 +191,7 @@ const Register = () => {
                   type="email"
                   placeholder="you@example.com"
                   className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 rounded-xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                    errors.email ? 'border-red-300' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
+                    errors.email ? 'border-red-300' : 'border-slate-200 focus:border-[#1e40af] focus:ring-4 focus:ring-[#1e40af]/10'
                   }`}
                 />
               </div>
@@ -212,10 +212,10 @@ const Register = () => {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   className={`w-full pl-11 pr-12 py-3.5 bg-slate-50 rounded-xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                    errors.password ? 'border-red-300' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
+                    errors.password ? 'border-red-300' : 'border-slate-200 focus:border-[#1e40af] focus:ring-4 focus:ring-[#1e40af]/10'
                   }`}
                 />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 text-slate-400 hover:text-[#1c0da1] transition-colors">
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 text-slate-400 hover:text-[#1e40af] transition-colors">
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -247,10 +247,10 @@ const Register = () => {
                   type={showConfirm ? 'text' : 'password'}
                   placeholder="••••••••"
                   className={`w-full pl-11 pr-12 py-3.5 bg-slate-50 rounded-xl outline-none border transition-all text-sm font-medium text-slate-700 ${
-                    errors.confirmPassword ? 'border-red-300' : 'border-slate-200 focus:border-[#1c0da1] focus:ring-4 focus:ring-[#1c0da1]/10'
+                    errors.confirmPassword ? 'border-red-300' : 'border-slate-200 focus:border-[#1e40af] focus:ring-4 focus:ring-[#1e40af]/10'
                   }`}
                 />
-                <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-4 text-slate-400 hover:text-[#1c0da1] transition-colors">
+                <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-4 text-slate-400 hover:text-[#1e40af] transition-colors">
                   {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -260,7 +260,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-[#1c0da1] text-white font-bold rounded-xl hover:bg-[#0a044a] transition-all shadow-xl shadow-[#1c0da1]/20 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+              className="w-full py-4 bg-[#1e40af] text-white font-bold rounded-xl hover:bg-[#0c1a3d] transition-all shadow-xl shadow-[#1e40af]/20 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -272,7 +272,7 @@ const Register = () => {
 
           <p className="text-center text-xs text-slate-400 mt-6 font-semibold">
             Already have an account?{' '}
-            <Link to="/login" className="font-black text-[#1c0da1] hover:text-[#d9cb00] transition-colors ml-1">
+            <Link to="/login" className="font-black text-[#1e40af] hover:text-[#d9cb00] transition-colors ml-1">
               Sign In
             </Link>
           </p>
