@@ -18,8 +18,8 @@ const statusConfig = {
 };
 
 const typeColors = {
-  'Class Listing': 'bg-purple-100 text-purple-700',
-  'Tutor Profile': 'bg-blue-100 text-blue-700',
+  'Class Listing': 'bg-blue-100 text-blue-700',
+  'Tutor Profile': 'bg-violet-100 text-violet-700',
   'Review': 'bg-orange-100 text-orange-700',
 };
 
@@ -41,7 +41,7 @@ const ReportsManagement = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-8 text-white">
+      <div className="bg-gradient-to-r from-[#0c1a3d] via-[#1e40af] to-[#2563eb] px-6 py-8 text-white">
         <div className="max-w-7xl mx-auto">
           <p className="text-[#d9cb00] text-xs font-bold tracking-widest uppercase mb-1">Admin</p>
           <h1 className="text-3xl font-black">Reports Management</h1>
@@ -70,7 +70,7 @@ const ReportsManagement = () => {
           {['all', 'pending', 'resolved', 'dismissed'].map(f => (
             <button key={f} onClick={() => setFilter(f)}
               className={`px-4 py-2 rounded-xl text-sm font-bold capitalize transition-all ${
-                filter === f ? 'bg-[#1c0da1] text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                filter === f ? 'bg-[#1e40af] text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
               }`}>
               {f}
             </button>
