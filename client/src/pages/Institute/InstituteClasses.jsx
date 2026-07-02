@@ -26,7 +26,7 @@ const InstituteClasses = () => {
             <p className="text-sm text-slate-500">Manage classes published by your institute.</p>
           </div>
           <div>
-            <button onClick={() => navigate('/dashboard/institute/add-class')} className="px-4 py-2 bg-[#1c0da1] text-white rounded-xl font-bold">Add Class</button>
+            <button onClick={() => navigate('/dashboard/institute/add-class')} className="px-4 py-2 bg-[#1e40af] text-white rounded-xl font-bold">Add Class</button>
           </div>
         </div>
 
