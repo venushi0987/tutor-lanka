@@ -36,11 +36,11 @@ const completionSteps = [
 ];
 
 const stats = [
-  { label: 'Profile Views', value: '1,240', icon: Eye, color: 'from-[#1c0da1] to-[#3d2bc4]', change: '+8%' },
+  { label: 'Profile Views', value: '1,240', icon: Eye, color: 'from-[#1e40af] to-[#2563eb]', change: '+8%' },
   { label: 'Contact Clicks', value: '89', icon: Phone, color: 'from-emerald-500 to-teal-600', change: '+15%' },
-  { label: 'Total Students', value: '55', icon: Users, color: 'from-purple-500 to-purple-700', change: '+3' },
+  { label: 'Total Students', value: '55', icon: Users, color: 'from-blue-500 to-blue-700', change: '+3' },
   { label: 'Reviews', value: '32', icon: Star, color: 'from-amber-500 to-orange-500', change: '+4' },
-  { label: 'Avg Rating', value: '4.8', icon: Award, color: 'from-pink-500 to-rose-500', change: '★★★★★' },
+  { label: 'Avg Rating', value: '4.8', icon: Award, color: 'from-sky-500 to-cyan-500', change: '★★★★★' },
 ];
 
 const TutorDashboard = () => {
@@ -52,7 +52,7 @@ const TutorDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-10 text-white">
+      <div className="bg-gradient-to-r from-[#0c1a3d] via-[#1e40af] to-[#2563eb] px-6 py-10 text-white">
         <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
             <p className="text-[#d9cb00] text-xs font-bold tracking-widest uppercase mb-1">Tutor Dashboard</p>
@@ -69,7 +69,7 @@ const TutorDashboard = () => {
               <Edit3 className="w-4 h-4" /> Edit Profile
             </button>
             <button onClick={() => navigate('/add-class')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#d9cb00] text-[#1c0da1] rounded-xl text-sm font-black hover:bg-yellow-300 transition-colors shadow-lg">
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#d9cb00] text-[#1e40af] rounded-xl text-sm font-black hover:bg-yellow-300 transition-colors shadow-lg">
               <Plus className="w-4 h-4" /> Add Class
             </button>
           </div>
@@ -102,15 +102,15 @@ const TutorDashboard = () => {
               <AreaChart data={viewsData}>
                 <defs>
                   <linearGradient id="views" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1c0da1" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#1c0da1" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#1e40af" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#1e40af" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                 <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
                 <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
                 <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 24px rgba(0,0,0,0.1)' }} />
-                <Area type="monotone" dataKey="views" stroke="#1c0da1" strokeWidth={2.5} fill="url(#views)" />
+                <Area type="monotone" dataKey="views" stroke="#1e40af" strokeWidth={2.5} fill="url(#views)" />
               </AreaChart>
             </ResponsiveContainer>
           </motion.div>
@@ -120,9 +120,9 @@ const TutorDashboard = () => {
             className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
             <h3 className="font-black text-slate-800 mb-1">Profile Completion</h3>
             <div className="flex items-center gap-3 mb-4">
-              <div className={`text-3xl font-black ${percent === 100 ? 'text-emerald-600' : 'text-[#1c0da1]'}`}>{percent}%</div>
+              <div className={`text-3xl font-black ${percent === 100 ? 'text-emerald-600' : 'text-[#1e40af]'}`}>{percent}%</div>
               <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#1c0da1] to-[#3d2bc4] rounded-full transition-all" style={{ width: `${percent}%` }} />
+                <div className="h-full bg-gradient-to-r from-[#1e40af] to-[#2563eb] rounded-full transition-all" style={{ width: `${percent}%` }} />
               </div>
             </div>
             <div className="space-y-2">
@@ -144,13 +144,13 @@ const TutorDashboard = () => {
             className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-black text-slate-800">My Classes</h3>
-              <button onClick={() => navigate('/add-class')} className="text-xs font-bold text-[#1c0da1] hover:underline flex items-center gap-1">
+              <button onClick={() => navigate('/add-class')} className="text-xs font-bold text-[#1e40af] hover:underline flex items-center gap-1">
                 <Plus className="w-3 h-3" /> Add New
               </button>
             </div>
             <div className="space-y-3">
               {myClasses.map(cls => (
-                <div key={cls.id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-[#1c0da1]/5 transition-colors">
+                <div key={cls.id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-[#1e40af]/5 transition-colors">
                   <div>
                     <p className="text-sm font-bold text-slate-800">{cls.title}</p>
                     <p className="text-xs text-slate-400 mt-0.5">{cls.subject} · Rs {cls.fee.toLocaleString()}/mo · {cls.students} students</p>
@@ -165,7 +165,7 @@ const TutorDashboard = () => {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
             className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
             <div className="flex items-center gap-2 mb-4">
-              <MessageSquare className="w-4 h-4 text-[#1c0da1]" />
+              <MessageSquare className="w-4 h-4 text-[#1e40af]" />
               <h3 className="font-black text-slate-800">Recent Inquiries</h3>
             </div>
             <div className="space-y-3">
