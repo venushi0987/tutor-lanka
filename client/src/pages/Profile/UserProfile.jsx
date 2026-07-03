@@ -8,7 +8,7 @@ const UserProfile = () => {
       <div className="w-full max-w-md bg-white rounded-[32px] border border-slate-100 shadow-xl p-8 text-center relative overflow-hidden">
         
         {/* Top styling band */}
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-r from-[#1c0da1] to-[#0a044a]" />
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-r from-[#1e40af] to-[#0c1a3d]" />
 
         {/* Profile Avatar */}
         <div className="relative z-10 mx-auto w-24 h-24 bg-slate-200 border-4 border-white rounded-full flex items-center justify-center text-4xl mt-6 shadow-md">
@@ -17,7 +17,7 @@ const UserProfile = () => {
 
         {/* User Metadata */}
         <h3 className="text-2xl font-black text-slate-800 mt-4 tracking-tight">{user.name}</h3>
-        <p className="text-xs font-bold text-[#1c0da1] uppercase tracking-widest mt-1">{user.role}</p>
+        <p className="text-xs font-bold text-[#1e40af] uppercase tracking-widest mt-1">{user.role}</p>
         <p className="text-xs font-semibold text-slate-400 mt-0.5">{user.email}</p>
 
         {/* Action / Stats Grid */}
@@ -30,7 +30,7 @@ const UserProfile = () => {
 
         {/* Buttons */}
         <div className="space-y-3">
-          <button className="w-full py-3 bg-[#1c0da1] text-white font-bold rounded-xl text-xs hover:bg-[#0a044a] transition-all">Edit Profile Details</button>
+          <button className="w-full py-3 bg-[#1e40af] text-white font-bold rounded-xl text-xs hover:bg-[#0c1a3d] transition-all">Edit Profile Details</button>
           <button className="w-full py-3 bg-red-50 text-red-600 font-bold rounded-xl text-xs hover:bg-red-100 transition-all">Log Out Account</button>
         </div>
 
