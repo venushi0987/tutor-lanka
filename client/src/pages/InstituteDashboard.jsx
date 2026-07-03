@@ -49,7 +49,7 @@ const InstituteDashboard = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-[#1c0da1] border-t-transparent rounded-full animate-spin mx-auto" />
+          <div className="w-12 h-12 border-4 border-[#1e40af] border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-sm text-slate-500 mt-3 font-medium">Loading your dashboard...</p>
         </div>
       </div>
@@ -57,15 +57,15 @@ const InstituteDashboard = () => {
   }
 
   const stats = [
-    { label: 'Total Classes', value: analytics?.totalClasses || classes.length || 0, icon: BookOpen, color: 'from-[#1c0da1] to-[#3d2bc4]', change: `${classes.filter(c => c.isActive).length} active` },
+    { label: 'Total Classes', value: analytics?.totalClasses || classes.length || 0, icon: BookOpen, color: 'from-[#1e40af] to-[#2563eb]', change: `${classes.filter(c => c.isActive).length} active` },
     { label: 'Total Halls', value: profile?.locations?.length || 0, icon: MapPin, color: 'from-emerald-500 to-teal-600', change: 'branch locations' },
-    { label: 'Followers', value: analytics?.followers || profile?.followers?.length || 0, icon: Users, color: 'from-purple-500 to-purple-700', change: 'institute followers' },
+    { label: 'Followers', value: analytics?.followers || profile?.followers?.length || 0, icon: Users, color: 'from-blue-500 to-blue-700', change: 'institute followers' },
     { label: 'Enrollments', value: analytics?.totalEnrollments || 0, icon: GraduationCap, color: 'from-amber-500 to-orange-500', change: 'total students' },
   ];
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-10 text-white">
+      <div className="bg-gradient-to-r from-[#0c1a3d] via-[#1e40af] to-[#2563eb] px-6 py-10 text-white">
         <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-3 mb-2">
@@ -109,7 +109,7 @@ const InstituteDashboard = () => {
               <Edit3 className="w-4 h-4" /> Edit Profile
             </button>
             <button onClick={() => navigate('/dashboard/institute/add-class')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#d9cb00] text-[#1c0da1] rounded-xl text-sm font-black hover:bg-yellow-300 transition-colors shadow-lg">
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#d9cb00] text-[#1e40af] rounded-xl text-sm font-black hover:bg-yellow-300 transition-colors shadow-lg">
               <Plus className="w-4 h-4" /> Add Class
             </button>
           </div>
@@ -146,15 +146,15 @@ const InstituteDashboard = () => {
               <AreaChart data={viewsData}>
                 <defs>
                   <linearGradient id="views" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1c0da1" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#1c0da1" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#1e40af" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#1e40af" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                 <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
                 <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
                 <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 24px rgba(0,0,0,0.1)' }} />
-                <Area type="monotone" dataKey="views" stroke="#1c0da1" strokeWidth={2.5} fill="url(#views)" />
+                <Area type="monotone" dataKey="views" stroke="#1e40af" strokeWidth={2.5} fill="url(#views)" />
               </AreaChart>
             </ResponsiveContainer>
           </motion.div>
@@ -164,9 +164,9 @@ const InstituteDashboard = () => {
             <h3 className="font-black text-slate-800 mb-3">Quick Actions</h3>
             <div className="space-y-2">
               {[
-                { label: 'Add New Class', icon: Plus, path: '/dashboard/institute/add-class', color: 'text-[#1c0da1]' },
+                { label: 'Add New Class', icon: Plus, path: '/dashboard/institute/add-class', color: 'text-[#1e40af]' },
                 { label: 'Manage Classes', icon: BookOpen, path: '/dashboard/institute/classes', color: 'text-emerald-600' },
-                { label: 'Add Branch Location', icon: MapPin, path: '/dashboard/institute/branches', color: 'text-purple-600' },
+                { label: 'Add Branch Location', icon: MapPin, path: '/dashboard/institute/branches', color: 'text-blue-600' },
                 { label: 'Edit Institute Profile', icon: Edit3, path: '/dashboard/institute/profile', color: 'text-amber-600' },
               ].map((action) => (
                 <button key={action.label} onClick={() => navigate(action.path)}
@@ -185,7 +185,7 @@ const InstituteDashboard = () => {
                 {profile?.slug && (
                   <p className="truncate">
                     <span className="font-semibold">Public URL:</span>{' '}
-                    <Link to={`/institute/${profile.slug}`} className="text-[#1c0da1] hover:underline">/institute/{profile.slug}</Link>
+                    <Link to={`/institute/${profile.slug}`} className="text-[#1e40af] hover:underline">/institute/{profile.slug}</Link>
                   </p>
                 )}
               </div>
@@ -198,10 +198,10 @@ const InstituteDashboard = () => {
             className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-black text-slate-800 flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-[#1c0da1]" /> My Classes
+                <BookOpen className="w-4 h-4 text-[#1e40af]" /> My Classes
               </h3>
               <button onClick={() => navigate('/dashboard/institute/add-class')}
-                className="text-xs font-bold text-[#1c0da1] hover:underline flex items-center gap-1">
+                className="text-xs font-bold text-[#1e40af] hover:underline flex items-center gap-1">
                 <Plus className="w-3 h-3" /> Add New
               </button>
             </div>
@@ -210,14 +210,14 @@ const InstituteDashboard = () => {
                 <BookOpen className="w-10 h-10 text-slate-300 mx-auto mb-2" />
                 <p className="text-sm text-slate-500">No classes yet</p>
                 <button onClick={() => navigate('/dashboard/institute/add-class')}
-                  className="mt-3 text-xs font-bold text-[#1c0da1] hover:underline">
+                  className="mt-3 text-xs font-bold text-[#1e40af] hover:underline">
                   Create your first class →
                 </button>
               </div>
             ) : (
               <div className="space-y-3 max-h-80 overflow-y-auto scrollbar-hide">
                 {classes.slice(0, 6).map(cls => (
-                  <div key={cls._id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-[#1c0da1]/5 transition-colors">
+                  <div key={cls._id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-[#1e40af]/5 transition-colors">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-slate-800 truncate">{cls.title}</p>
                       <p className="text-xs text-slate-400 mt-0.5">
@@ -231,7 +231,7 @@ const InstituteDashboard = () => {
                 ))}
                 {classes.length > 6 && (
                   <button onClick={() => navigate('/dashboard/institute/classes')}
-                    className="w-full text-center text-xs font-bold text-[#1c0da1] py-2 hover:underline">
+                    className="w-full text-center text-xs font-bold text-[#1e40af] py-2 hover:underline">
                     View all {classes.length} classes →
                   </button>
                 )}
@@ -271,7 +271,7 @@ const InstituteDashboard = () => {
                         </p>
                       </div>
                       <button onClick={() => navigate('/dashboard/institute/branches')}
-                        className="text-xs text-slate-400 hover:text-[#1c0da1] ml-2">
+                        className="text-xs text-slate-400 hover:text-[#1e40af] ml-2">
                         <Edit3 className="w-3 h-3" />
                       </button>
                     </div>
