@@ -45,7 +45,7 @@ const InstitutePublicProfile = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-[#1c0da1] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#1e40af] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -57,7 +57,7 @@ const InstitutePublicProfile = () => {
           <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
           <h2 className="text-xl font-black text-slate-700">Institute not found</h2>
           <p className="text-sm text-slate-400 mt-1">The institute you are looking for does not exist.</p>
-          <button onClick={() => navigate('/explore')} className="mt-4 px-4 py-2 bg-[#1c0da1] text-white rounded-xl text-sm font-bold">Browse Classes</button>
+          <button onClick={() => navigate('/explore')} className="mt-4 px-4 py-2 bg-[#1e40af] text-white rounded-xl text-sm font-bold">Browse Classes</button>
         </div>
       </div>
     );
@@ -70,7 +70,7 @@ const InstitutePublicProfile = () => {
       {/* Top Bar */}
       <div className="bg-white border-b border-slate-100 px-6 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-[#1c0da1]">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-[#1e40af]">
             <ChevronLeft className="w-4 h-4" /> Back
           </button>
           <button className="p-2 rounded-xl hover:bg-slate-100 text-slate-400"><Share2 className="w-4 h-4" /></button>
@@ -78,7 +78,7 @@ const InstitutePublicProfile = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-12 text-white">
+      <div className="bg-gradient-to-r from-[#0c1a3d] via-[#1e40af] to-[#2563eb] px-6 py-12 text-white">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-6">
           <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden border-4 border-white/20 shadow-xl flex-shrink-0">
             {logo ? (
@@ -111,7 +111,7 @@ const InstitutePublicProfile = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
               <h2 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-[#1c0da1]" /> Available Classes ({classes.length})
+                <BookOpen className="w-5 h-5 text-[#1e40af]" /> Available Classes ({classes.length})
               </h2>
               {classes.length === 0 ? (
                 <div className="text-center py-10">
@@ -122,10 +122,10 @@ const InstitutePublicProfile = () => {
                 <div className="space-y-3">
                   {classes.map(cls => (
                     <Link key={cls._id} to={`/class/${cls._id}`}
-                      className="block p-4 rounded-xl bg-slate-50 hover:bg-[#1c0da1]/5 border border-slate-100 transition-all group">
+                      className="block p-4 rounded-xl bg-slate-50 hover:bg-[#1e40af]/5 border border-slate-100 transition-all group">
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-slate-800 group-hover:text-[#1c0da1] transition-colors">{cls.title}</h3>
+                          <h3 className="font-bold text-slate-800 group-hover:text-[#1e40af] transition-colors">{cls.title}</h3>
                           <p className="text-xs text-slate-500 mt-0.5">{cls.subject} · {cls.grade} · {cls.language}</p>
                           <div className="flex items-center gap-3 mt-2 text-[10px] text-slate-400">
                             <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {cls.location?.city || 'Online'}</span>
@@ -133,7 +133,7 @@ const InstitutePublicProfile = () => {
                           </div>
                         </div>
                         <div className="text-right ml-4">
-                          <p className="text-sm font-black text-[#1c0da1]">Rs {cls.fee?.toLocaleString()}<span className="text-[10px] text-slate-400 font-normal">/mo</span></p>
+                          <p className="text-sm font-black text-[#1e40af]">Rs {cls.fee?.toLocaleString()}<span className="text-[10px] text-slate-400 font-normal">/mo</span></p>
                           <p className="text-[10px] text-slate-400 mt-1">{cls.enrollCount || 0} enrolled</p>
                         </div>
                       </div>
@@ -203,7 +203,7 @@ const InstitutePublicProfile = () => {
                   </a>
                 )}
                 {contact?.website && (
-                  <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-xl bg-purple-50 text-purple-700 hover:bg-purple-100 transition-colors">
+                  <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors">
                     <Globe className="w-4 h-4" />
                     <div>
                       <p className="text-xs font-bold">Website</p>
