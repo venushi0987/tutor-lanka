@@ -34,7 +34,7 @@ const MapSearch = () => {
           <h3 className="font-black">Find Nearby Institutes</h3>
           <div className="ml-auto flex items-center gap-2">
             <input type="number" value={radius} onChange={(e)=>setRadius(e.target.value)} className="w-20 p-2 border rounded-xl" />
-            <button onClick={()=>{ if(position) fetchNearby(position[1], position[0], radius); }} className="px-3 py-2 bg-[#1c0da1] text-white rounded-xl">Search</button>
+            <button onClick={()=>{ if(position) fetchNearby(position[1], position[0], radius); }} className="px-3 py-2 bg-[#1e40af] text-white rounded-xl">Search</button>
           </div>
         </div>
 
