@@ -60,7 +60,7 @@ const InstituteProfileEdit = () => {
           </div>
 
           <div className="flex justify-end">
-            <button type="submit" className="px-4 py-2 bg-[#1c0da1] text-white rounded-xl font-bold">Save Profile</button>
+            <button type="submit" className="px-4 py-2 bg-[#1e40af] text-white rounded-xl font-bold">Save Profile</button>
           </div>
         </form>
       </div>
