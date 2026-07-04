@@ -42,7 +42,7 @@ const SearchClasses = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-8 text-white">
+      <div className="bg-gradient-to-r from-[#0c1a3d] via-[#1e40af] to-[#2563eb] px-6 py-8 text-white">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-2xl font-black">Search Tuition Classes</h1>
           <p className="text-sm text-slate-300 mt-1">Find classes near you from top institutes</p>
@@ -54,12 +54,12 @@ const SearchClasses = () => {
                 className="w-full pl-11 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 outline-none focus:bg-white/20 text-sm" />
             </div>
             <button onClick={() => setShowFilters(!showFilters)}
-              className={`px-4 py-3 rounded-xl border text-sm font-bold flex items-center gap-2 ${showFilters ? 'bg-[#d9cb00] text-[#1c0da1]' : 'bg-white/10 text-white border-white/20'}`}>
+              className={`px-4 py-3 rounded-xl border text-sm font-bold flex items-center gap-2 ${showFilters ? 'bg-[#d9cb00] text-[#1e40af]' : 'bg-white/10 text-white border-white/20'}`}>
               <SlidersHorizontal className="w-4 h-4" /> Filters
             </button>
             <div className="flex bg-white/10 rounded-xl p-1 border border-white/20">
-              <button onClick={() => setView('list')} className={`px-3 py-2 rounded-lg text-xs font-bold ${view === 'list' ? 'bg-white text-[#1c0da1]' : 'text-white/70'}`}>List</button>
-              <button onClick={() => setView('map')} className={`px-3 py-2 rounded-lg text-xs font-bold ${view === 'map' ? 'bg-white text-[#1c0da1]' : 'text-white/70'}`}>Map</button>
+              <button onClick={() => setView('list')} className={`px-3 py-2 rounded-lg text-xs font-bold ${view === 'list' ? 'bg-white text-[#1e40af]' : 'text-white/70'}`}>List</button>
+              <button onClick={() => setView('map')} className={`px-3 py-2 rounded-lg text-xs font-bold ${view === 'map' ? 'bg-white text-[#1e40af]' : 'text-white/70'}`}>Map</button>
             </div>
           </div>
           {showFilters && (
@@ -106,7 +106,7 @@ const SearchClasses = () => {
                         <div className="cursor-pointer" onClick={() => navigate(`/class/${cls._id}`)}>
                           <p className="font-bold text-sm">{cls.title}</p>
                           <p className="text-xs text-slate-500">{cls.location?.city || ''}</p>
-                          <p className="text-xs font-bold text-[#1c0da1] mt-1">Rs {cls.fee?.toLocaleString()}/mo</p>
+                          <p className="text-xs font-bold text-[#1e40af] mt-1">Rs {cls.fee?.toLocaleString()}/mo</p>
                         </div>
                       </Popup>
                     </Marker>
@@ -123,12 +123,12 @@ const SearchClasses = () => {
                 <div key={cls._id} onClick={() => navigate(`/class/${cls._id}`)}
                   className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer">
                   <div className="flex items-center gap-1.5 mb-2">
-                    <Building2 className="w-3 h-3 text-[#1c0da1]" />
-                    <span className="text-[10px] font-bold text-[#1c0da1]">{cls.instituteId?.name || 'Institute'}</span>
+                    <Building2 className="w-3 h-3 text-[#1e40af]" />
+                    <span className="text-[10px] font-bold text-[#1e40af]">{cls.instituteId?.name || 'Institute'}</span>
                   </div>
                   <div className="flex items-center justify-between mb-1">
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700">{cls.teachingMethod}</span>
-                    <span className="text-xs font-black text-[#1c0da1]">Rs {cls.fee?.toLocaleString()}<span className="text-[10px] text-slate-400 font-normal">/mo</span></span>
+                    <span className="text-xs font-black text-[#1e40af]">Rs {cls.fee?.toLocaleString()}<span className="text-[10px] text-slate-400 font-normal">/mo</span></span>
                   </div>
                   <h3 className="font-bold text-slate-800 text-sm">{cls.title}</h3>
                   <p className="text-xs text-slate-500 mt-0.5">{cls.subject} · {cls.grade} · {cls.language}</p>
