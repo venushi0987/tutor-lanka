@@ -54,7 +54,7 @@ const UserManagement = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-8 text-white">
+      <div className="bg-gradient-to-r from-[#0c1a3d] via-[#1e40af] to-[#2563eb] px-6 py-8 text-white">
         <div className="max-w-7xl mx-auto">
           <p className="text-[#d9cb00] text-xs font-bold tracking-widest uppercase mb-1">Admin</p>
           <h1 className="text-3xl font-black">User Management</h1>
@@ -73,13 +73,13 @@ const UserManagement = () => {
                 value={search}
                 onChange={e => { setSearch(e.target.value); setPage(1); }}
                 placeholder="Search by name or email..."
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-[#1c0da1] transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-[#1e40af] transition-colors"
               />
             </div>
             <select
               value={roleFilter}
               onChange={e => { setRoleFilter(e.target.value); setPage(1); }}
-              className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-[#1c0da1] transition-colors"
+              className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-[#1e40af] transition-colors"
             >
               <option value="all">All Roles</option>
               <option value="student">Students</option>
@@ -111,7 +111,7 @@ const UserManagement = () => {
                     >
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1e40af] to-[#2563eb] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                             {getInitials(u.name)}
                           </div>
                           <span className="font-semibold text-slate-800">{u.name}</span>

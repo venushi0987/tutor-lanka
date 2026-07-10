@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const TutorProfile = require('../models/TutorProfile');
 const StudentProfile = require('../models/StudentProfile');
+const InstituteProfile = require('../models/InstituteProfile');
 const ActivityLog = require('../models/ActivityLog');
 const { generateAccessToken, generateRefreshToken } = require('../utils/generateToken');
 const jwt = require('jsonwebtoken');
@@ -56,6 +57,11 @@ const register = async (req, res) => {
       await TutorProfile.create({ userId: user._id, slug });
     } else if (userRole === 'student') {
       await StudentProfile.create({ userId: user._id });
+    } else if (userRole === 'institute') {
+      // Create an institute profile tied to this user
+      const slugify = require('slugify');
+      const slug = slugify(name, { lower: true, strict: true }) + '-' + user._id.toString().slice(-4);
+      await InstituteProfile.create({ userId: user._id, name, slug });
     }
 
     // Generate tokens (may be null when JWT is disabled)
@@ -256,6 +262,8 @@ const getMe = async (req, res) => {
       profile = await TutorProfile.findOne({ userId: user._id }).lean();
     } else if (user.role === 'student') {
       profile = await StudentProfile.findOne({ userId: user._id }).lean();
+    } else if (user.role === 'institute') {
+      profile = await InstituteProfile.findOne({ userId: user._id }).lean();
     }
 
     res.json({ success: true, user: { ...user, profile } });

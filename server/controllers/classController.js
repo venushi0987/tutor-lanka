@@ -1,5 +1,6 @@
 const Class = require('../models/Class');
 const TutorProfile = require('../models/TutorProfile');
+const InstituteProfile = require('../models/InstituteProfile');
 const slugify = require('slugify');
 const { sendNotification } = require('../config/socket');
 
@@ -27,6 +28,7 @@ const getClasses = async (req, res) => {
     const [classes, total] = await Promise.all([
       Class.find(filter)
         .populate('tutorId', 'name avatar')
+        .populate('instituteId', 'name logo')
         .sort({ isFeatured: -1, createdAt: -1 })
         .skip(skip)
         .limit(Number(limit)),
@@ -44,12 +46,18 @@ const getClassById = async (req, res) => {
   try {
     const { id } = req.params;
     const filter = id.match(/^[0-9a-fA-F]{24}$/) ? { _id: id } : { slug: id };
-    const cls = await Class.findOne(filter).populate('tutorId', 'name avatar email phone');
+    const cls = await Class.findOne(filter)
+      .populate('tutorId', 'name avatar email phone')
+      .populate('instituteId', 'name logo contact');
     if (!cls) return res.status(404).json({ success: false, message: 'Class not found' });
     cls.views += 1;
     await cls.save({ validateBeforeSave: false });
-    const tutorProfile = await TutorProfile.findOne({ userId: cls.tutorId._id });
-    res.json({ success: true, class: cls, tutorProfile });
+
+    let profile = null;
+    if (cls.tutorId) profile = await TutorProfile.findOne({ userId: cls.tutorId._id });
+    if (cls.instituteId && !profile) profile = await InstituteProfile.findOne({ userId: cls.instituteId._id });
+
+    res.json({ success: true, class: cls, profile });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -59,20 +67,42 @@ const getClassById = async (req, res) => {
 // @route   POST /api/classes
 const createClass = async (req, res) => {
   try {
-    const { title, subject, grade, examType, language, fee, feeType, description, teachingMethod, schedule, location, maxStudents, tags } = req.body;
+    let { title, subject, grade, examType, language, fee, feeType, description, teachingMethod, schedule, location, maxStudents, tags } = req.body;
+    // parse location/schedule/tags if sent as JSON strings (multipart/form-data)
+    if (location && typeof location === 'string') {
+      try { location = JSON.parse(location); } catch (_) { location = location; }
+    }
+    if (schedule && typeof schedule === 'string') {
+      try { schedule = JSON.parse(schedule); } catch (_) { schedule = schedule; }
+    }
+    if (tags && typeof tags === 'string') {
+      try { tags = JSON.parse(tags); } catch (_) { tags = (tags ? tags.split(',') : []); }
+    }
+
     const slug = slugify(title, { lower: true, strict: true }) + '-' + Date.now().toString().slice(-4);
 
-    const cls = await Class.create({
-      tutorId: req.user._id,
+    const createPayload = {
       title, subject, grade, examType, language,
       fee: Number(fee), feeType, description,
       bannerImage: req.file ? req.file.path : '',
       teachingMethod, schedule, location, maxStudents, tags, slug,
-    });
+    };
 
-    // Notify followers
-    const profile = await TutorProfile.findOne({ userId: req.user._id });
-    if (profile && profile.followers.length > 0) {
+    // set owner depending on role
+    if (req.user.role === 'institute') {
+      createPayload.instituteId = req.user._id;
+    } else {
+      createPayload.tutorId = req.user._id;
+    }
+
+    const cls = await Class.create(createPayload);
+
+    // Notify followers from the appropriate profile
+    let profile = null;
+    if (createPayload.tutorId) profile = await TutorProfile.findOne({ userId: createPayload.tutorId });
+    if (createPayload.instituteId) profile = await InstituteProfile.findOne({ userId: createPayload.instituteId });
+
+    if (profile && profile.followers && profile.followers.length > 0) {
       profile.followers.forEach(followerId => {
         sendNotification(followerId, 'new_class', `${req.user.name} added a new class: ${title}`, cls._id);
       });
@@ -90,9 +120,12 @@ const updateClass = async (req, res) => {
   try {
     const cls = await Class.findById(req.params.id);
     if (!cls) return res.status(404).json({ success: false, message: 'Class not found' });
-    if (cls.tutorId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+
+    const ownerId = (cls.tutorId) ? cls.tutorId.toString() : (cls.instituteId ? cls.instituteId.toString() : null);
+    if (ownerId !== req.user._id.toString() && req.user.role !== 'admin') {
       return res.status(403).json({ success: false, message: 'Not authorized' });
     }
+
     const updates = { ...req.body };
     if (req.file) updates.bannerImage = req.file.path;
     const updated = await Class.findByIdAndUpdate(req.params.id, updates, { new: true, runValidators: true });
@@ -108,9 +141,12 @@ const deleteClass = async (req, res) => {
   try {
     const cls = await Class.findById(req.params.id);
     if (!cls) return res.status(404).json({ success: false, message: 'Class not found' });
-    if (cls.tutorId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+
+    const ownerId = (cls.tutorId) ? cls.tutorId.toString() : (cls.instituteId ? cls.instituteId.toString() : null);
+    if (ownerId !== req.user._id.toString() && req.user.role !== 'admin') {
       return res.status(403).json({ success: false, message: 'Not authorized' });
     }
+
     await cls.deleteOne();
     res.json({ success: true, message: 'Class deleted' });
   } catch (error) {
@@ -122,7 +158,10 @@ const deleteClass = async (req, res) => {
 // @route   GET /api/classes/my
 const getMyClasses = async (req, res) => {
   try {
-    const classes = await Class.find({ tutorId: req.user._id }).sort({ createdAt: -1 });
+    let filter = {};
+    if (req.user.role === 'institute') filter = { instituteId: req.user._id };
+    else filter = { tutorId: req.user._id };
+    const classes = await Class.find(filter).sort({ createdAt: -1 });
     res.json({ success: true, classes });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

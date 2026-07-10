@@ -33,7 +33,7 @@ const TutorVerification = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#0a044a] via-[#1c0da1] to-[#2a1ab5] px-6 py-8 text-white">
+      <div className="bg-gradient-to-r from-[#0c1a3d] via-[#1e40af] to-[#2563eb] px-6 py-8 text-white">
         <div className="max-w-7xl mx-auto">
           <p className="text-[#d9cb00] text-xs font-bold tracking-widest uppercase mb-1">Admin</p>
           <h1 className="text-3xl font-black">Tutor Verification</h1>
@@ -49,7 +49,7 @@ const TutorVerification = () => {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-4 py-2 rounded-xl text-sm font-bold capitalize transition-all ${
-                filter === f ? 'bg-[#1c0da1] text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                filter === f ? 'bg-[#1e40af] text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
               }`}
             >
               {f} {f === 'pending' && <span className="ml-1 bg-amber-500 text-white text-xs rounded-full px-1.5 py-0.5">{tutors.filter(t => t.status === 'pending').length}</span>}
@@ -70,7 +70,7 @@ const TutorVerification = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#1c0da1] to-[#3d2bc4] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#1e40af] to-[#2563eb] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                       {getInitials(tutor.name)}
                     </div>
                     <div>
@@ -84,9 +84,9 @@ const TutorVerification = () => {
                 </div>
 
                 <div className="space-y-2 text-xs text-slate-500 mb-4">
-                  <div className="flex items-center gap-2"><BookOpen className="w-3.5 h-3.5 text-[#1c0da1]" />{tutor.subject}</div>
-                  <div className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-[#1c0da1]" />{tutor.district}</div>
-                  <div className="flex items-center gap-2"><Clock className="w-3.5 h-3.5 text-[#1c0da1]" />Applied: {tutor.applied}</div>
+                  <div className="flex items-center gap-2"><BookOpen className="w-3.5 h-3.5 text-[#1e40af]" />{tutor.subject}</div>
+                  <div className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-[#1e40af]" />{tutor.district}</div>
+                  <div className="flex items-center gap-2"><Clock className="w-3.5 h-3.5 text-[#1e40af]" />Applied: {tutor.applied}</div>
                 </div>
 
                 {/* Profile completion bar */}
