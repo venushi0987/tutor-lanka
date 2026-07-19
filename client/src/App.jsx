@@ -39,25 +39,25 @@ const ReportsManagement = lazy(() => import('./pages/Admin/ReportsManagement'));
 
 // Placeholder dashboards for pages not yet implemented
 const StudentDashboard = () => (
-  <div className="p-10 text-center"><h1 className="text-2xl font-black text-[#1e40af]">Student Dashboard</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div>
+  <div className="min-h-screen bg-dark-950 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-primary-400">Student Dashboard</h1><p className="text-slate-500 text-sm mt-2">Coming Soon...</p></div></div>
 );
 const HallDashboard = () => (
-  <div className="p-10 text-center"><h1 className="text-2xl font-black text-[#1e40af]">Hall Owner Dashboard</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div>
+  <div className="min-h-screen bg-dark-950 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-primary-400">Hall Owner Dashboard</h1><p className="text-slate-500 text-sm mt-2">Coming Soon...</p></div></div>
 );
 
 const App = () => {
   return (
     <Router>
-      <div className="w-full min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased">
+      <div className="w-full min-h-screen bg-dark-950 text-slate-100 flex flex-col font-sans antialiased">
         
         {/* Global Navigation Bar - Renders on EVERY single page */}
         <Navbar />
 
         {/* Dynamic Pages Area */}
-        <main className="flex-grow pt-16"> 
+        <main id="main-content" className="flex-grow pt-16"> 
           <Suspense fallback={
-            <div className="flex items-center justify-center py-20">
-              <div className="w-10 h-10 border-4 border-primary-400 border-t-transparent rounded-full animate-spin" />
+            <div className="flex items-center justify-center py-24">
+              <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
             </div>
           }>
             <Routes>
@@ -68,8 +68,8 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/unauthorized" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-red-600">Unauthorized</h1><p className="text-slate-400 text-sm mt-2">You do not have permission to access this page.</p></div></div>} />
-              <Route path="/settings" element={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-[#1e40af]">Settings</h1><p className="text-slate-400 text-sm mt-2">Coming Soon...</p></div></div>} />
+              <Route path="/unauthorized" element={<div className="min-h-screen bg-dark-950 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-red-400">Unauthorized</h1><p className="text-slate-500 text-sm mt-2">You do not have permission to access this page.</p></div></div>} />
+              <Route path="/settings" element={<div className="min-h-screen bg-dark-950 flex items-center justify-center"><div className="text-center"><h1 className="text-2xl font-black text-primary-400">Settings</h1><p className="text-slate-500 text-sm mt-2">Coming Soon...</p></div></div>} />
 
               {/* =========================================================
                   🔓 UNPROTECTED DASHBOARDS & PAGES (Open for Testing)
