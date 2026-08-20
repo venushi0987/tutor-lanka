@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -23,7 +24,7 @@
     "react-hook-form": "^7.78.0",
     "react-hot-toast": "^2.6.0",
     "react-is": "^19.2.7",
-    "react-leaflet": "^4.2.1",
+    "react-leaflet": "^5.0.0",
     "react-redux": "^9.3.0",
     "react-router-dom": "^7.17.0",
     "recharts": "^3.8.1",
@@ -31,7 +32,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@tailwindcss/postcss": "^4.3.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
