@@ -7,7 +7,7 @@ const AddHall = () => {
     e.preventDefault();
     console.log('Hall Details Added:', hallData);
     alert('Hall published successfully!');
-    // Backend API: /api/halls
+    // Backend API: /api/halls 
   };
 
 
