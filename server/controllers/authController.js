@@ -8,7 +8,7 @@ const { generateAccessToken, generateRefreshToken } = require('../utils/generate
 const jwt = require('jsonwebtoken');
 
 // ─────────────────────────────────────────────
-// Helper: set httpOnly refresh token cookie
+// Helper: set httpOnly refresh token cookies
 // ─────────────────────────────────────────────
 const setRefreshCookie = (res, token) => {
   if (!token) return;
