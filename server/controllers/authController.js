@@ -7,7 +7,8 @@ const ActivityLog = require('../models/ActivityLog');
 const { generateAccessToken, generateRefreshToken } = require('../utils/generateToken');
 const jwt = require('jsonwebtoken');
 
-// ─────────────────────────────────────────────
+
+// ────────────────────────────────────────────
 // Helper: set httpOnly refresh token cookies
 // ─────────────────────────────────────────────
 const setRefreshCookie = (res, token) => {
