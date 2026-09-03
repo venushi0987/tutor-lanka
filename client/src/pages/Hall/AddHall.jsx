@@ -9,6 +9,7 @@ const AddHall = () => {
     alert('Hall published successfully!');
     // Backend API: /api/halls 
   };
+  
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-slate-50 py-10 px-4 flex justify-center items-center">
