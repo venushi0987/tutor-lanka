@@ -5,8 +5,6 @@ import { GraduationCap } from 'lucide-react';
 const Footer = () => {
   const year = new Date().getFullYear();
 
-  
-
   const links = {
     Platform: [
       { label: 'Find Classes',    to: '/explore' },
