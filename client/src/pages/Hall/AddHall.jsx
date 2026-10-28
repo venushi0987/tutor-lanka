@@ -8,7 +8,6 @@ const AddHall = () => {
     console.log('Hall Details Added:', hallData);
     alert('Hall published successfully!');
     // Backend API: /api/halls 
-    
   };
 
   return (
